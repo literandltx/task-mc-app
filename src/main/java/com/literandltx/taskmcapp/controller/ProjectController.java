@@ -21,17 +21,17 @@ public class ProjectController {
 
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public void retrieveProjectDetails(@PathVariable Long id) {
 
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void updateProject(@PathVariable Long id) {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteProject(@PathVariable Long id) {
 
     }
