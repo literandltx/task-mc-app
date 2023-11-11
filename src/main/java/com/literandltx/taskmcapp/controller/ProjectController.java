@@ -17,7 +17,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public void retrieveUserProjects() {
+    public void retrieveUsersProjects() {
 
     }
 
