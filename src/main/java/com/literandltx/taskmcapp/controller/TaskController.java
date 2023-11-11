@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TaskController {
     @PostMapping
-    public void CreateNewTask() {
+    public void createNewTask() {
 
     }
 
@@ -21,12 +21,12 @@ public class TaskController {
 
     }
 
-    @GetMapping("/{id]")
+    @GetMapping("/{id}")
     public void retrieveTaskDetails(@PathVariable Long id) {
 
     }
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public void updateTask(@PathVariable Long id) {
 
     }
