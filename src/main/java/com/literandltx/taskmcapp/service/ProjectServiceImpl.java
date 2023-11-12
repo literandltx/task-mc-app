@@ -32,14 +32,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRespondDto findById(Long id) {
-        return projectMapper.toDto(projectRepository.findById(id).orElseThrow(RuntimeException::new));
+        return projectMapper.toDto(projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cannot find project with id: " + id)));
     }
 
     @Override
     public ProjectRespondDto updateById(Long id, ProjectRequestDto requestDto) {
         if (!projectRepository.existsById(id)) {
-            throw new RuntimeException("Entity not found");
+            throw new RuntimeException("Cannot find project with id: " + id);
         }
+
         Project model = projectMapper.toModel(requestDto);
         model.setId(id);
 
