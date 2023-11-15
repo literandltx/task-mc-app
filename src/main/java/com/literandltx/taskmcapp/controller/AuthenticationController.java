@@ -4,6 +4,7 @@ import com.literandltx.taskmcapp.dto.user.UserLoginRequestDto;
 import com.literandltx.taskmcapp.dto.user.UserLoginResponseDto;
 import com.literandltx.taskmcapp.dto.user.UserRegistrationRequestDto;
 import com.literandltx.taskmcapp.dto.user.UserRegistrationResponseDto;
+import com.literandltx.taskmcapp.security.AuthenticationService;
 import com.literandltx.taskmcapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationController {
     private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
     public UserLoginResponseDto login(
             @RequestBody @Valid UserLoginRequestDto requestDto
     ) {
-        throw new UnsupportedOperationException();
+        return authenticationService.authenticate(requestDto);
     }
 
     @PostMapping("/register")
