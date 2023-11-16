@@ -4,15 +4,8 @@ databaseChangeLog:
       author: literandltx
       changes:
         - dropUniqueConstraint:
-            constraintName: projects_name_key
+            constraintName: PROJECTS_NAME_KEY
             tableName: projects
-#        - modifyDataType:
-#            tableName: projects
-#            columnName: name
-#            newDataType: varchar(255)
-
-
-
         - addColumn:
             tableName: projects
             columns:
