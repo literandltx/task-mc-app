@@ -1,12 +1,15 @@
 package com.literandltx.taskmcapp.controller;
 
-import com.literandltx.taskmcapp.dto.project.ProjectRequestDto;
+import com.literandltx.taskmcapp.dto.project.CreateProjectRequestDto;
 import com.literandltx.taskmcapp.dto.project.ProjectRespondDto;
+import com.literandltx.taskmcapp.dto.project.UpdateProjectRequestDto;
+import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.service.ProjectService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,28 +26,53 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping
-    public ProjectRespondDto createNewProject(@RequestBody @Valid ProjectRequestDto requestDto) {
-        return projectService.save(requestDto);
+    public ProjectRespondDto createNewProject(
+            Authentication authentication,
+            @RequestBody @Valid CreateProjectRequestDto requestDto
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        return projectService.save(requestDto, user);
     }
 
     @GetMapping
-    public List<ProjectRespondDto> retrieveUsersProjects(Pageable pageable) {
-        return projectService.findAll(pageable);
+    public List<ProjectRespondDto> retrieveUsersProjects(
+            Authentication authentication,
+            Pageable pageable
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        return projectService.findAll(pageable, user);
     }
 
     @GetMapping("/{id}")
-    public ProjectRespondDto retrieveProjectDetails(@PathVariable Long id) {
-        return projectService.findById(id);
+    public ProjectRespondDto retrieveProjectDetails(
+            Authentication authentication,
+            @PathVariable Long id
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        return projectService.findById(id, user);
     }
 
     @PutMapping("/{id}")
     public ProjectRespondDto updateProject(
-            @PathVariable Long id, @RequestBody ProjectRequestDto requestDto) {
-        return projectService.updateById(id, requestDto);
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody UpdateProjectRequestDto requestDto
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        return projectService.updateById(id, requestDto, user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
-        projectService.deleteById(id);
+    public void deleteProject(
+            Authentication authentication,
+            @PathVariable Long id
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        projectService.deleteById(id, user);
     }
 }

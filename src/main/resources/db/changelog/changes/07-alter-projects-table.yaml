@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: alter-projects-table
+      author: literandltx
+      changes:
+        - dropUniqueConstraint:
+            constraintName: PROJECTS_NAME_KEY
+            tableName: projects
+        - addColumn:
+            tableName: projects
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    foreignKeyName: fk_shopping_carts_users
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
