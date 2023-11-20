@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findAllByUser(Pageable pageable, User user);
 
-    Optional<Project> findByIdAndUser(Long id, User user);
+    Optional<Project> findByIdAndUserId(Long id, Long userId);
 
     boolean existsByIdAndUser(Long id, User user);
 }
