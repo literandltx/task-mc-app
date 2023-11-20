@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
             Long id,
             User user
     ) {
-        return projectMapper.toDto(projectRepository.findByIdAndUser(id, user)
+        return projectMapper.toDto(projectRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new RuntimeException("Cannot find project with id: " + id)));
     }
 
@@ -58,6 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (!projectRepository.existsByIdAndUser(id, user)) {
             throw new RuntimeException("Cannot find project with id: " + id);
         }
+
         Project model = projectMapper.toModel(requestDto);
         model.setId(id);
         model.setUser(user);
