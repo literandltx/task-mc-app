@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-comments-table
+      author: literandltx
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    foreignKeyName: fk_comments_users
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - column:
+                  name: task_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    foreignKeyName: fk_comments_tasks
+                    referencedTableName: tasks
+                    referencedColumnNames: id
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
