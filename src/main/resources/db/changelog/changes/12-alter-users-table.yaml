@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: alter-users-table
+      author: literandltx
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: is_confirmed
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
