@@ -58,9 +58,8 @@ public class UserServiceImpl implements UserService {
         Confirmation confirmation = confirmationRepository.findByToken(token).orElseThrow(
                 () -> new RuntimeException("Cannot find token: " + token));
 
-        if (
-                !Objects.equals(user.getId(), confirmation.getUser().getId()) ||
-                !Objects.equals(confirmation.getToken(), token)
+        if (!Objects.equals(user.getId(), confirmation.getUser().getId())
+                || !Objects.equals(confirmation.getToken(), token)
         ) {
             throw new RuntimeException("Invalid user token");
         }
