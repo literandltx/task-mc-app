@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -80,5 +81,29 @@ public class TaskController {
         User user = (User) authentication.getPrincipal();
 
         taskService.deleteById(id, projectId, user);
+    }
+
+    @PatchMapping("/assign")
+    public void assignLabel(
+            @RequestParam(name = "labelId") Long labelId,
+            @RequestParam(name = "taskId") Long taskId,
+            @RequestParam(name = "projectId") Long projectId,
+            Authentication authentication
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        taskService.assignLabel(labelId, taskId, projectId, user);
+    }
+
+    @PatchMapping("/remove")
+    public void removeLabel(
+            @RequestParam(name = "labelId") Long labelId,
+            @RequestParam(name = "taskId") Long taskId,
+            @RequestParam(name = "projectId") Long projectId,
+            Authentication authentication
+    ) {
+        User user = (User) authentication.getPrincipal();
+
+        taskService.removeLabel(labelId, taskId, projectId, user);
     }
 }

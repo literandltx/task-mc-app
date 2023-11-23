@@ -4,13 +4,17 @@ import com.literandltx.taskmcapp.dto.task.CreateTaskRequestDto;
 import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
 import com.literandltx.taskmcapp.dto.task.UpdateTaskRequestDto;
 import com.literandltx.taskmcapp.mapper.TaskMapper;
+import com.literandltx.taskmcapp.model.Label;
 import com.literandltx.taskmcapp.model.Project;
 import com.literandltx.taskmcapp.model.Task;
 import com.literandltx.taskmcapp.model.User;
+import com.literandltx.taskmcapp.repository.LabelRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final LabelRepository labelRepository;
     private final TaskMapper taskMapper;
 
     @Override
@@ -53,7 +58,10 @@ public class TaskServiceImpl implements TaskService {
         }
 
         return taskRepository.findAllByProjectId(pageable, projectId).stream()
-                .map(taskMapper::toDto)
+                .map(task -> {
+                    task.setLabels(getTaskLabels(task));
+                    return taskMapper.toDto(task);
+                })
                 .toList();
     }
 
@@ -73,6 +81,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findByIdAndProjectId(id, projectId)
                 .orElseThrow(() -> new RuntimeException("Cannot find task with id: " + id));
 
+        task.setLabels(getTaskLabels(task));
         return taskMapper.toDto(task);
     }
 
@@ -117,5 +126,58 @@ public class TaskServiceImpl implements TaskService {
         }
 
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    public void assignLabel(
+            Long labelId,
+            Long taskId,
+            Long projectId,
+            User user
+    ) {
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new RuntimeException("Cannot find project with id: " + projectId));
+        if (!Objects.equals(project.getUser().getId(), user.getId())) {
+            throw new RuntimeException("User have not project with id: " + projectId);
+        }
+
+        if (!taskRepository.existsByIdAndProjectId(taskId, projectId)) {
+            throw new RuntimeException("Cannot find task with id: " + taskId);
+        }
+        if (!labelRepository.existsByIdAndProjectId(labelId, projectId)) {
+            throw new RuntimeException("Cannot find label with id");
+        }
+
+        taskRepository.assignLabelToTask(taskId, labelId);
+    }
+
+    @Override
+    public void removeLabel(
+            Long labelId,
+            Long taskId,
+            Long projectId,
+            User user
+    ) {
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new RuntimeException("Cannot find project with id: " + projectId));
+        if (!Objects.equals(project.getUser().getId(), user.getId())) {
+            throw new RuntimeException("User have not project with id: " + projectId);
+        }
+
+        taskRepository.removeLabelFromTask(taskId, labelId);
+    }
+
+    private Set<Label> getTaskLabels(Task task) {
+        return taskRepository.findAllAssignedLabels(task.getId()).stream()
+                .map(s -> {
+                    String[] parts = s.split(",");
+                    Label label = new Label();
+                    label.setId(Long.valueOf(parts[0]));
+                    label.setName(parts[1]);
+                    label.setColor(parts[2]);
+
+                    return label;
+                })
+                .collect(Collectors.toSet());
     }
 }

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tasks-labels-table
+      author: literandltx
+      changes:
+        - createTable:
+            tableName: tasks_labels
+            columns:
+              - column:
+                  name: task_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_labels_tasks
+                    referencedTableName: tasks
+                    referencedColumnNames:  id
+                    primaryKey: true
+              - column:
+                  name: label_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_labels_labels
+                    referencedTableName: labels
+                    referencedColumnNames: id
+                    primaryKey: true
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
