@@ -3,11 +3,14 @@ package com.literandltx.taskmcapp.service;
 import com.literandltx.taskmcapp.dto.user.UserRegistrationRequestDto;
 import com.literandltx.taskmcapp.dto.user.UserRegistrationResponseDto;
 import com.literandltx.taskmcapp.mapper.UserMapper;
+import com.literandltx.taskmcapp.model.Confirmation;
 import com.literandltx.taskmcapp.model.Role;
 import com.literandltx.taskmcapp.model.User;
+import com.literandltx.taskmcapp.repository.ConfirmationRepository;
 import com.literandltx.taskmcapp.repository.RoleRepository;
 import com.literandltx.taskmcapp.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final ConfirmationRepository confirmationRepository;
 
     @Override
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
@@ -39,6 +43,30 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cannot find role by name: " + Role.RoleName.ROLE_USER.name()))));
 
-        return userMapper.toModel(userRepository.save(user));
+        User saved = userRepository.save(user);
+
+        Confirmation confirmation = new Confirmation(user);
+        confirmationRepository.save(confirmation);
+
+        // TODO: 11/23/23 send token to user email
+        
+        return userMapper.toModel(saved);
+    }
+
+    @Override
+    public Boolean verifyUserToken(String token, User user) {
+        Confirmation confirmation = confirmationRepository.findByToken(token).orElseThrow(
+                () -> new RuntimeException("Cannot find token: " + token));
+
+        if (
+                !Objects.equals(user.getId(), confirmation.getUser().getId()) ||
+                !Objects.equals(confirmation.getToken(), token)
+        ) {
+            throw new RuntimeException("Invalid user token");
+        }
+
+        user.setIsConfirmed(true);
+
+        return Boolean.TRUE;
     }
 }
