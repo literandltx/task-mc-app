@@ -9,6 +9,7 @@ import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.ConfirmationRepository;
 import com.literandltx.taskmcapp.repository.RoleRepository;
 import com.literandltx.taskmcapp.repository.UserRepository;
+import com.literandltx.taskmcapp.service.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Objects;
 import java.util.Set;
@@ -19,11 +20,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
-    private final RoleRepository roleRepository;
     private final ConfirmationRepository confirmationRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final UserMapper userMapper;
 
     @Override
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
@@ -48,8 +50,9 @@ public class UserServiceImpl implements UserService {
         Confirmation confirmation = new Confirmation(user);
         confirmationRepository.save(confirmation);
 
-        // TODO: 11/23/23 send token to user email
-        
+        emailService.sendEmailMessage(
+                request.getUsername(), request.getEmail(), confirmation.getToken());
+
         return userMapper.toModel(saved);
     }
 
