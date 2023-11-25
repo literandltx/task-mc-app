@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.dto.user;
+package com.literandltx.taskmcapp.dto.user.login;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

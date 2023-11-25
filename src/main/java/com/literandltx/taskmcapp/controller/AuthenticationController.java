@@ -1,9 +1,9 @@
 package com.literandltx.taskmcapp.controller;
 
-import com.literandltx.taskmcapp.dto.user.UserLoginRequestDto;
-import com.literandltx.taskmcapp.dto.user.UserLoginResponseDto;
-import com.literandltx.taskmcapp.dto.user.UserRegistrationRequestDto;
-import com.literandltx.taskmcapp.dto.user.UserRegistrationResponseDto;
+import com.literandltx.taskmcapp.dto.user.login.UserLoginRequestDto;
+import com.literandltx.taskmcapp.dto.user.login.UserLoginResponseDto;
+import com.literandltx.taskmcapp.dto.user.register.UserRegistrationRequestDto;
+import com.literandltx.taskmcapp.dto.user.register.UserRegistrationResponseDto;
 import com.literandltx.taskmcapp.security.AuthenticationService;
 import com.literandltx.taskmcapp.service.UserService;
 import jakarta.validation.Valid;

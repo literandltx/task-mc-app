@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.dto.user;
+package com.literandltx.taskmcapp.dto.user.login;
 
 import lombok.Data;
 
