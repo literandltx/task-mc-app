@@ -1,7 +1,7 @@
 package com.literandltx.taskmcapp.security;
 
-import com.literandltx.taskmcapp.dto.user.UserLoginRequestDto;
-import com.literandltx.taskmcapp.dto.user.UserLoginResponseDto;
+import com.literandltx.taskmcapp.dto.user.login.UserLoginRequestDto;
+import com.literandltx.taskmcapp.dto.user.login.UserLoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

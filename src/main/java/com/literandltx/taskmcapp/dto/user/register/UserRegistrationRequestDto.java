@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.dto.user;
+package com.literandltx.taskmcapp.dto.user.register;
 
 import com.literandltx.taskmcapp.validation.FieldMatch;
 import jakarta.validation.constraints.Email;
