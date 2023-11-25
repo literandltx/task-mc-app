@@ -1,7 +1,9 @@
 package com.literandltx.taskmcapp.service;
 
-import com.literandltx.taskmcapp.dto.user.UserRegistrationRequestDto;
-import com.literandltx.taskmcapp.dto.user.UserRegistrationResponseDto;
+import com.literandltx.taskmcapp.dto.user.profile.UpdateUserProfileRequestDto;
+import com.literandltx.taskmcapp.dto.user.profile.UserProfileResponseDto;
+import com.literandltx.taskmcapp.dto.user.register.UserRegistrationRequestDto;
+import com.literandltx.taskmcapp.dto.user.register.UserRegistrationResponseDto;
 import com.literandltx.taskmcapp.mapper.UserMapper;
 import com.literandltx.taskmcapp.model.Confirmation;
 import com.literandltx.taskmcapp.model.Role;
@@ -68,7 +70,38 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setIsConfirmed(true);
+        userRepository.save(user);
 
         return Boolean.TRUE;
+    }
+
+    @Override
+    public UserProfileResponseDto updateUserRole(Long roleId, Long userId, User adminUser) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("Cannot find user by id: " + userId));
+        Role role = roleRepository.findById(roleId).orElseThrow(
+                () -> new RuntimeException("Cannot find role by id: " + roleId));
+
+        user.getRoles().add(role);
+
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserProfileResponseDto getProfileInfo(User user) {
+        return userMapper.toDto(user);
+    }
+
+    @Override
+    public UserProfileResponseDto updateProfileInfo(
+            UpdateUserProfileRequestDto requestDto,
+            User user
+    ) {
+        user.setUsername(requestDto.getUsername());
+        user.setEmail(requestDto.getEmail());
+        user.setFirstName(requestDto.getFirstName());
+        user.setLastName(requestDto.getLastName());
+
+        return userMapper.toDto(userRepository.save(user));
     }
 }
