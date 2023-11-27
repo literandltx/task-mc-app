@@ -4,13 +4,17 @@ import com.literandltx.taskmcapp.dto.task.CreateTaskRequestDto;
 import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
 import com.literandltx.taskmcapp.dto.task.UpdateTaskRequestDto;
 import com.literandltx.taskmcapp.mapper.TaskMapper;
+import com.literandltx.taskmcapp.model.Attachment;
 import com.literandltx.taskmcapp.model.Label;
 import com.literandltx.taskmcapp.model.Project;
 import com.literandltx.taskmcapp.model.Task;
 import com.literandltx.taskmcapp.model.User;
+import com.literandltx.taskmcapp.repository.AttachmentRepository;
 import com.literandltx.taskmcapp.repository.LabelRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
+import jakarta.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class TaskServiceImpl implements TaskService {
+    private final AttachmentRepository attachmentRepository;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final LabelRepository labelRepository;
@@ -42,9 +47,9 @@ public class TaskServiceImpl implements TaskService {
         model.setProject(project);
 
         Task saved = taskRepository.save(model);
-        return taskMapper.toDto(saved);
+        return taskMapper.toDto(saved, new HashSet<>());
     }
-    
+
     @Override
     public List<TaskResponseDto> findAll(
             Long projectId,
@@ -60,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAllByProjectId(pageable, projectId).stream()
                 .map(task -> {
                     task.setLabels(getTaskLabels(task));
-                    return taskMapper.toDto(task);
+                    return taskMapper.toDto(task, getAttachedFiles(task));
                 })
                 .toList();
     }
@@ -82,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new RuntimeException("Cannot find task with id: " + id));
 
         task.setLabels(getTaskLabels(task));
-        return taskMapper.toDto(task);
+        return taskMapper.toDto(task, getAttachedFiles(task));
     }
 
     @Override
@@ -106,7 +111,7 @@ public class TaskServiceImpl implements TaskService {
         model.setId(id);
         model.setProject(project);
 
-        return taskMapper.toDto(taskRepository.save(model));
+        return taskMapper.toDto(taskRepository.save(model), getAttachedFiles(model));
     }
 
     @Override
@@ -128,6 +133,7 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void assignLabel(
             Long labelId,
@@ -178,6 +184,12 @@ public class TaskServiceImpl implements TaskService {
 
                     return label;
                 })
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getAttachedFiles(Task task) {
+        return attachmentRepository.findAllByTaskId(task.getId()).stream()
+                .map(Attachment::getFilename)
                 .collect(Collectors.toSet());
     }
 }
