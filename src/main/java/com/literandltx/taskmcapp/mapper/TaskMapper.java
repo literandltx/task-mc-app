@@ -21,10 +21,11 @@ public interface TaskMapper {
     Task toModel(UpdateTaskRequestDto requestDto);
 
     @Mappings({
-            @Mapping(source = "project.id", target = "projectId"),
-            @Mapping(target = "labelIds", ignore = true)
+            @Mapping(source = "task.project.id", target = "projectId"),
+            @Mapping(target = "labelIds", ignore = true),
+            @Mapping(source = "attachedFiles", target = "attachedFiles")
     })
-    TaskResponseDto toDto(Task task);
+    TaskResponseDto toDto(Task task, Set<String> attachedFiles);
 
     @AfterMapping
     default void setTaskLabels(@MappingTarget TaskResponseDto responseDto, Task task) {
