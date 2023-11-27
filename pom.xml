@@ -100,6 +100,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- api -->
+        <dependency>
+            <groupId>com.dropbox.core</groupId>
+            <artifactId>dropbox-core-sdk</artifactId>
+            <version>5.4.4</version>
+        </dependency>
 
         <!-- tools -->
         <dependency>

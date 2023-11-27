@@ -16,4 +16,5 @@ public class TaskResponseDto {
     private Task.Priority priority;
     private Task.Status status;
     private Set<LabelResponseDto> labelIds;
+    private Set<String> attachedFiles;
 }

@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-attachments-table
+      author: literandltx
+      changes:
+        - createTable:
+            tableName: attachments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: task_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    foreignKeyName: fk_attachments_tasks
+                    referencedTableName: tasks
+                    referencedColumnNames: id
+              - column:
+                  name: filename
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dropbox_filename
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
