@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.task.CreateTaskRequestDto;
 import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
@@ -13,6 +13,7 @@ import com.literandltx.taskmcapp.repository.AttachmentRepository;
 import com.literandltx.taskmcapp.repository.LabelRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
+import com.literandltx.taskmcapp.service.app.TaskService;
 import jakarta.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;

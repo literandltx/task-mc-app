@@ -4,7 +4,7 @@ import com.literandltx.taskmcapp.dto.task.CreateTaskRequestDto;
 import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
 import com.literandltx.taskmcapp.dto.task.UpdateTaskRequestDto;
 import com.literandltx.taskmcapp.model.User;
-import com.literandltx.taskmcapp.service.TaskService;
+import com.literandltx.taskmcapp.service.app.TaskService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

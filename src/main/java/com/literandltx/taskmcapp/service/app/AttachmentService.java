@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app;
 
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
 import com.literandltx.taskmcapp.model.User;

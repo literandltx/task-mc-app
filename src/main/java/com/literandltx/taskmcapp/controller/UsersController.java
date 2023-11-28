@@ -3,7 +3,7 @@ package com.literandltx.taskmcapp.controller;
 import com.literandltx.taskmcapp.dto.user.profile.UpdateUserProfileRequestDto;
 import com.literandltx.taskmcapp.dto.user.profile.UserProfileResponseDto;
 import com.literandltx.taskmcapp.model.User;
-import com.literandltx.taskmcapp.service.UserService;
+import com.literandltx.taskmcapp.service.app.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

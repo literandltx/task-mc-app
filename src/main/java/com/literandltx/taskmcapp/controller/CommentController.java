@@ -3,7 +3,7 @@ package com.literandltx.taskmcapp.controller;
 import com.literandltx.taskmcapp.dto.comment.CommentResponseDto;
 import com.literandltx.taskmcapp.dto.comment.CreateCommentRequestDto;
 import com.literandltx.taskmcapp.model.User;
-import com.literandltx.taskmcapp.service.CommentService;
+import com.literandltx.taskmcapp.service.app.CommentService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

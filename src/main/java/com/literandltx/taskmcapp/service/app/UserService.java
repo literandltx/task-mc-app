@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app;
 
 import com.literandltx.taskmcapp.dto.user.profile.UpdateUserProfileRequestDto;
 import com.literandltx.taskmcapp.dto.user.profile.UserProfileResponseDto;
