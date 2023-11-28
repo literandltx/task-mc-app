@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.labels.CreateLabelRequestDto;
 import com.literandltx.taskmcapp.dto.labels.LabelResponseDto;
@@ -9,6 +9,7 @@ import com.literandltx.taskmcapp.model.Project;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.LabelRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
+import com.literandltx.taskmcapp.service.app.LabelService;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

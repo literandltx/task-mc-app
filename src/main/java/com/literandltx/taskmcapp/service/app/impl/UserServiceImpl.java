@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.user.profile.UpdateUserProfileRequestDto;
 import com.literandltx.taskmcapp.dto.user.profile.UserProfileResponseDto;
@@ -11,6 +11,7 @@ import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.ConfirmationRepository;
 import com.literandltx.taskmcapp.repository.RoleRepository;
 import com.literandltx.taskmcapp.repository.UserRepository;
+import com.literandltx.taskmcapp.service.app.UserService;
 import com.literandltx.taskmcapp.service.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Objects;

@@ -6,7 +6,7 @@ import com.literandltx.taskmcapp.dto.user.login.UserLoginResponseDto;
 import com.literandltx.taskmcapp.dto.user.register.UserRegistrationRequestDto;
 import com.literandltx.taskmcapp.dto.user.register.UserRegistrationResponseDto;
 import com.literandltx.taskmcapp.security.AuthenticationService;
-import com.literandltx.taskmcapp.service.UserService;
+import com.literandltx.taskmcapp.service.app.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

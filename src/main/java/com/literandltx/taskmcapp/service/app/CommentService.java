@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app;
 
 import com.literandltx.taskmcapp.dto.comment.CommentResponseDto;
 import com.literandltx.taskmcapp.dto.comment.CreateCommentRequestDto;

@@ -4,7 +4,7 @@ import com.literandltx.taskmcapp.dto.attachment.AttachmentResponseDto;
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
 import com.literandltx.taskmcapp.mapper.AttachmentMapper;
 import com.literandltx.taskmcapp.model.User;
-import com.literandltx.taskmcapp.service.AttachmentService;
+import com.literandltx.taskmcapp.service.app.AttachmentService;
 import com.literandltx.taskmcapp.service.dropbox.DropboxService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

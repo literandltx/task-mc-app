@@ -4,7 +4,7 @@ import com.literandltx.taskmcapp.dto.labels.CreateLabelRequestDto;
 import com.literandltx.taskmcapp.dto.labels.LabelResponseDto;
 import com.literandltx.taskmcapp.dto.labels.UpdateLabelRequestDto;
 import com.literandltx.taskmcapp.model.User;
-import com.literandltx.taskmcapp.service.LabelService;
+import com.literandltx.taskmcapp.service.app.LabelService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

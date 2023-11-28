@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.comment.CommentResponseDto;
 import com.literandltx.taskmcapp.dto.comment.CreateCommentRequestDto;
@@ -10,6 +10,7 @@ import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.CommentRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
+import com.literandltx.taskmcapp.service.app.CommentService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;

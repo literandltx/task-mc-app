@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.project.CreateProjectRequestDto;
 import com.literandltx.taskmcapp.dto.project.ProjectRespondDto;
@@ -7,6 +7,7 @@ import com.literandltx.taskmcapp.mapper.ProjectMapper;
 import com.literandltx.taskmcapp.model.Project;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
+import com.literandltx.taskmcapp.service.app.ProjectService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

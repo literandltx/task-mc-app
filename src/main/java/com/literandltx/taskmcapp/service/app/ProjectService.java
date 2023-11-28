@@ -1,4 +1,4 @@
-package com.literandltx.taskmcapp.service;
+package com.literandltx.taskmcapp.service.app;
 
 import com.literandltx.taskmcapp.dto.project.CreateProjectRequestDto;
 import com.literandltx.taskmcapp.dto.project.ProjectRespondDto;
