@@ -1,5 +1,6 @@
 package com.literandltx.taskmcapp.controller;
 
+import com.literandltx.taskmcapp.aspect.LogExecutionTime;
 import com.literandltx.taskmcapp.dto.user.login.UserLoginRequestDto;
 import com.literandltx.taskmcapp.dto.user.login.UserLoginResponseDto;
 import com.literandltx.taskmcapp.dto.user.register.UserRegistrationRequestDto;
@@ -20,6 +21,7 @@ public class AuthenticationController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
+    @LogExecutionTime
     @PostMapping("/login")
     public UserLoginResponseDto login(
             @RequestBody @Valid UserLoginRequestDto requestDto
@@ -27,6 +29,7 @@ public class AuthenticationController {
         return authenticationService.authenticate(requestDto);
     }
 
+    @LogExecutionTime
     @PostMapping("/register")
     public UserRegistrationResponseDto register(
             @RequestBody @Valid UserRegistrationRequestDto requestDto
