@@ -1,6 +1,7 @@
 package com.literandltx.taskmcapp.exception;
 
 import com.dropbox.core.DbxException;
+import com.literandltx.taskmcapp.exception.custom.AttachmentException;
 import com.literandltx.taskmcapp.exception.custom.DropboxException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -42,7 +43,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({ PSQLException.class })
-    protected ResponseEntity<Object> handleRegistrationException(
+    protected ResponseEntity<Object> handlePostgresException(
             final PSQLException ex,
             final WebRequest request
     ) {
@@ -57,7 +58,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({ DropboxException.class, DbxException.class })
-    protected ResponseEntity<Object> handleRegistrationException(
+    protected ResponseEntity<Object> handleDropboxException(
             final DropboxException ex,
             final WebRequest request
     ) {
@@ -66,6 +67,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", "Dropbox error occurred: " + ex.getMessage());
+
+        return handleExceptionInternal(ex, body, new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({ AttachmentException.class })
+    protected ResponseEntity<Object> handleAttachmentException(
+            final AttachmentException ex,
+            final WebRequest request
+    ) {
+        final Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", "Attachment service error occurred: " + ex.getMessage());
 
         return handleExceptionInternal(ex, body, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);

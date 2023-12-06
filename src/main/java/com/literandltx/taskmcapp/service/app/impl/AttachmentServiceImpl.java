@@ -1,6 +1,7 @@
 package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
+import com.literandltx.taskmcapp.exception.custom.AttachmentException;
 import com.literandltx.taskmcapp.model.Attachment;
 import com.literandltx.taskmcapp.model.Task;
 import com.literandltx.taskmcapp.model.User;
@@ -41,7 +42,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         try {
             dropboxService.uploadFile(filePath, file.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AttachmentException("Cannot upload to dropbox file: " + filePath, e);
         }
 
         Attachment model = new Attachment();
@@ -76,7 +77,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                 outputStream.write(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Cannot download file: " + requestDto.getFilename());
+            throw new AttachmentException("Cannot download file: " + requestDto.getFilename());
         }
     }
 }
