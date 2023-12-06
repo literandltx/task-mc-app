@@ -1,5 +1,7 @@
 package com.literandltx.taskmcapp.exception;
 
+import com.dropbox.core.DbxException;
+import com.literandltx.taskmcapp.exception.custom.DropboxException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,16 +50,34 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return e.getDefaultMessage();
     }
 
-    @ExceptionHandler(value = PSQLException.class)
+    @ExceptionHandler({ PSQLException.class })
     protected ResponseEntity<Object> handleRegistrationException(
             PSQLException ex,
             WebRequest request
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
+
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", "Postgres error occurred: " + ex.getMessage());
+
         return handleExceptionInternal(ex, body, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler({ DropboxException.class, DbxException.class })
+    protected ResponseEntity<Object> handleRegistrationException(
+            DropboxException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", "Dropbox error occurred: " + ex.getMessage());
+
+        return handleExceptionInternal(ex, body, new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
+    }
+
 }
