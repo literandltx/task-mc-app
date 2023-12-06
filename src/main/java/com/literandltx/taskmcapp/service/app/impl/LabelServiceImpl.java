@@ -12,6 +12,7 @@ import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.service.app.LabelService;
 import java.util.List;
 import java.util.Objects;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class LabelServiceImpl implements LabelService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
@@ -47,7 +48,7 @@ public class LabelServiceImpl implements LabelService {
             Pageable pageable
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
@@ -64,13 +65,13 @@ public class LabelServiceImpl implements LabelService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
 
         Label label = labelRepository.findByIdAndProjectId(id, projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find label with id: " + id));
+                () -> new EntityNotFoundException("Cannot find label with id: " + id));
 
         return labelMapper.toDto(label);
     }
@@ -83,7 +84,7 @@ public class LabelServiceImpl implements LabelService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
@@ -106,7 +107,7 @@ public class LabelServiceImpl implements LabelService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }

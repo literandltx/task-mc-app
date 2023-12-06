@@ -14,6 +14,7 @@ import com.literandltx.taskmcapp.repository.LabelRepository;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
 import com.literandltx.taskmcapp.service.app.TaskService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
@@ -58,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
             Pageable pageable
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
         }
@@ -78,14 +79,14 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
 
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User does not have project with id: " + projectId);
         }
 
         Task task = taskRepository.findByIdAndProjectId(id, projectId)
-                .orElseThrow(() -> new RuntimeException("Cannot find task with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find task with id: " + id));
 
         task.setLabels(getTaskLabels(task));
         return taskMapper.toDto(task, getAttachedFiles(task));
@@ -99,7 +100,7 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
         }
@@ -122,7 +123,7 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
         }
@@ -143,7 +144,7 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
         }
@@ -166,7 +167,7 @@ public class TaskServiceImpl implements TaskService {
             User user
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
         }

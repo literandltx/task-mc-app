@@ -14,6 +14,7 @@ import com.literandltx.taskmcapp.service.app.CommentService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ public class CommentServiceImpl implements CommentService {
             Long taskId
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
         Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find task in project:"));
+                () -> new EntityNotFoundException("Cannot find task in project:"));
 
         Comment model = commentMapper.toModel(requestDto);
         model.setTimestamp(LocalDateTime.now());
@@ -59,12 +60,12 @@ public class CommentServiceImpl implements CommentService {
             Long taskId
     ) {
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find project with id: " + projectId));
+                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
         Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(
-                () -> new RuntimeException("Cannot find task in project:"));
+                () -> new EntityNotFoundException("Cannot find task in project:"));
 
         return commentRepository.findAllByTaskId(pageable, task.getId()).stream()
                 .map(commentMapper::toDto)

@@ -9,6 +9,7 @@ import com.literandltx.taskmcapp.repository.AttachmentRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
 import com.literandltx.taskmcapp.service.app.AttachmentService;
 import com.literandltx.taskmcapp.service.dropbox.DropboxService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             MultipartFile file
     ) {
         Task task = taskRepository.findById(taskId).orElseThrow(
-                () -> new RuntimeException("Cannot find task by id: " + taskId));
+                () -> new EntityNotFoundException("Cannot find task by id: " + taskId));
 
         if (!task.getProject().getUser().getId().equals(user.getId())) {
             throw new RuntimeException();
