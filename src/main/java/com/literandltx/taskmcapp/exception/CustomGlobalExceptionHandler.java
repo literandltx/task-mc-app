@@ -24,38 +24,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
+            final MethodArgumentNotValidException ex,
+            final HttpHeaders headers,
+            final HttpStatusCode status,
+            final WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
-        List<String> errors = ex.getBindingResult().getAllErrors().stream()
+        final Map<String, Object> body = new LinkedHashMap<>();
+        final List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
+
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
         body.put("errors", errors);
 
         return new ResponseEntity<>(body, headers, status);
     }
 
-    private String getErrorMessage(ObjectError e) {
-        if (e instanceof FieldError) {
-            String field = ((FieldError) e).getField();
-            String message = e.getDefaultMessage();
-            return field + " " + message;
-        }
-
-        return e.getDefaultMessage();
-    }
-
     @ExceptionHandler({ PSQLException.class })
     protected ResponseEntity<Object> handleRegistrationException(
-            PSQLException ex,
-            WebRequest request
+            final PSQLException ex,
+            final WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
+        final Map<String, Object> body = new LinkedHashMap<>();
 
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);
@@ -67,10 +58,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler({ DropboxException.class, DbxException.class })
     protected ResponseEntity<Object> handleRegistrationException(
-            DropboxException ex,
-            WebRequest request
+            final DropboxException ex,
+            final WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
+        final Map<String, Object> body = new LinkedHashMap<>();
 
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);
@@ -78,6 +69,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         return handleExceptionInternal(ex, body, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);
+    }
+
+    private String getErrorMessage(final ObjectError e) {
+        if (e instanceof FieldError) {
+            final String field = ((FieldError) e).getField();
+            final String message = e.getDefaultMessage();
+
+            return field + " " + message;
+        }
+
+        return e.getDefaultMessage();
     }
 
 }
