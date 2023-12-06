@@ -2,6 +2,7 @@ package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
 import com.literandltx.taskmcapp.exception.custom.AttachmentException;
+import com.literandltx.taskmcapp.exception.custom.PermissionDeniedException;
 import com.literandltx.taskmcapp.model.Attachment;
 import com.literandltx.taskmcapp.model.Task;
 import com.literandltx.taskmcapp.model.User;
@@ -35,7 +36,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                 () -> new EntityNotFoundException("Cannot find task by id: " + taskId));
 
         if (!task.getProject().getUser().getId().equals(user.getId())) {
-            throw new RuntimeException();
+            throw new PermissionDeniedException("User have no access to task with id: " + taskId);
         }
 
         String filePath = "/" + taskId + "-" + file.getOriginalFilename();

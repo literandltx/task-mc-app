@@ -3,11 +3,12 @@ package com.literandltx.taskmcapp.exception;
 import com.dropbox.core.DbxException;
 import com.literandltx.taskmcapp.exception.custom.AttachmentException;
 import com.literandltx.taskmcapp.exception.custom.DropboxException;
+import com.literandltx.taskmcapp.exception.custom.PermissionDeniedException;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.persistence.EntityNotFoundException;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -98,6 +99,36 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", "Attachment service error occurred: " + ex.getMessage());
+
+        return handleExceptionInternal(ex, body, new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({ PermissionDeniedException.class })
+    protected ResponseEntity<Object> handleUserDataPermissionDeniedException(
+            final PermissionDeniedException ex,
+            final WebRequest request
+    ) {
+        final Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", "" + ex.getMessage());
+
+        return handleExceptionInternal(ex, body, new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({ Exception.class })
+    protected ResponseEntity<Object> handleUserDataPermissionDeniedException(
+            final Exception ex,
+            final WebRequest request
+    ) {
+        final Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", ex.getMessage());
 
         return handleExceptionInternal(ex, body, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);

@@ -3,6 +3,7 @@ package com.literandltx.taskmcapp.service.app.impl;
 import com.literandltx.taskmcapp.dto.task.CreateTaskRequestDto;
 import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
 import com.literandltx.taskmcapp.dto.task.UpdateTaskRequestDto;
+import com.literandltx.taskmcapp.exception.custom.PermissionDeniedException;
 import com.literandltx.taskmcapp.mapper.TaskMapper;
 import com.literandltx.taskmcapp.model.Attachment;
 import com.literandltx.taskmcapp.model.Label;
@@ -125,7 +126,7 @@ public class TaskServiceImpl implements TaskService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
-            throw new RuntimeException("User have not project with id: " + projectId);
+            throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
 
         if (!taskRepository.existsByIdAndProjectId(id, projectId)) {
@@ -146,14 +147,14 @@ public class TaskServiceImpl implements TaskService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
-            throw new RuntimeException("User have not project with id: " + projectId);
+            throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
 
         if (!taskRepository.existsByIdAndProjectId(taskId, projectId)) {
             throw new RuntimeException("Cannot find task with id: " + taskId);
         }
         if (!labelRepository.existsByIdAndProjectId(labelId, projectId)) {
-            throw new RuntimeException("Cannot find label with id");
+            throw new RuntimeException("Cannot find label with id: " + labelId);
         }
 
         taskRepository.assignLabelToTask(taskId, labelId);
@@ -169,7 +170,7 @@ public class TaskServiceImpl implements TaskService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
-            throw new RuntimeException("User have not project with id: " + projectId);
+            throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
 
         taskRepository.removeLabelFromTask(taskId, labelId);

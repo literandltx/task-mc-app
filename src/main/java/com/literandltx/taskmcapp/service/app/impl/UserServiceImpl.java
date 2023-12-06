@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RuntimeException {
         if (userRepository.findByUsername(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Unable to complete registration");
+            throw new RuntimeException("User have already registered");
         }
 
         User user = new User();
