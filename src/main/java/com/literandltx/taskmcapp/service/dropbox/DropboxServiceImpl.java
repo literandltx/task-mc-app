@@ -7,6 +7,7 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import com.literandltx.taskmcapp.exception.custom.DropboxException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ class DropboxServiceImpl implements DropboxService {
                 result = client.files().listFolderContinue(result.getCursor());
             }
         } catch (DbxException e) {
-            throw new RuntimeException("Cannot download file: " + filePath);
+            throw new DropboxException("Cannot download file: " + filePath);
         }
 
         return handleDropboxAction(() -> client.files().download(filePath).getInputStream(),
@@ -98,7 +99,7 @@ class DropboxServiceImpl implements DropboxService {
     ) {
         boolean isValidType = validType.isInstance(metadata);
         if (!isValidType) {
-            throw new RuntimeException(exceptionMessage);
+            throw new DropboxException(exceptionMessage);
         }
     }
 
@@ -106,7 +107,7 @@ class DropboxServiceImpl implements DropboxService {
         try {
             return action.perform();
         } catch (Exception e) {
-            throw new RuntimeException(String
+            throw new DropboxException(String
                     .format("%s with cause: %s", exceptionMessage, e.getMessage()), e);
         }
     }

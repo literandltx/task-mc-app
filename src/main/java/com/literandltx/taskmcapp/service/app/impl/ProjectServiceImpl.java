@@ -8,6 +8,7 @@ import com.literandltx.taskmcapp.model.Project;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.repository.ProjectRepository;
 import com.literandltx.taskmcapp.service.app.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,8 @@ public class ProjectServiceImpl implements ProjectService {
             User user
     ) {
         return projectMapper.toDto(projectRepository.findByIdAndUserId(id, user.getId())
-                .orElseThrow(() -> new RuntimeException("Cannot find project with id: " + id)));
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Cannot find project with id: " + id)));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
             User user
     ) {
         if (!projectRepository.existsByIdAndUser(id, user)) {
-            throw new RuntimeException("Cannot find project with id: " + id);
+            throw new EntityNotFoundException("Cannot find project with id: " + id);
         }
 
         Project model = projectMapper.toModel(requestDto);

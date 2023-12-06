@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RuntimeException {
         if (userRepository.findByUsername(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Unable to complete registration");
+            throw new RuntimeException("User have already registered");
         }
 
         User user = new User();
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verifyUserToken(String token, User user) {
         Confirmation confirmation = confirmationRepository.findByToken(token).orElseThrow(
-                () -> new RuntimeException("Cannot find token: " + token));
+                () -> new EntityNotFoundException("Cannot find token: " + token));
 
         if (!Objects.equals(user.getId(), confirmation.getUser().getId())
                 || !Objects.equals(confirmation.getToken(), token)
@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileResponseDto updateUserRole(Long roleId, Long userId, User adminUser) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("Cannot find user by id: " + userId));
+                () -> new EntityNotFoundException("Cannot find user by id: " + userId));
         Role role = roleRepository.findById(roleId).orElseThrow(
-                () -> new RuntimeException("Cannot find role by id: " + roleId));
+                () -> new EntityNotFoundException("Cannot find role by id: " + roleId));
 
         user.getRoles().add(role);
 

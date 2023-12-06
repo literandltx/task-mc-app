@@ -1,6 +1,8 @@
 package com.literandltx.taskmcapp.service.app.impl;
 
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
+import com.literandltx.taskmcapp.exception.custom.AttachmentException;
+import com.literandltx.taskmcapp.exception.custom.PermissionDeniedException;
 import com.literandltx.taskmcapp.model.Attachment;
 import com.literandltx.taskmcapp.model.Task;
 import com.literandltx.taskmcapp.model.User;
@@ -8,6 +10,7 @@ import com.literandltx.taskmcapp.repository.AttachmentRepository;
 import com.literandltx.taskmcapp.repository.TaskRepository;
 import com.literandltx.taskmcapp.service.app.AttachmentService;
 import com.literandltx.taskmcapp.service.dropbox.DropboxService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +33,10 @@ public class AttachmentServiceImpl implements AttachmentService {
             MultipartFile file
     ) {
         Task task = taskRepository.findById(taskId).orElseThrow(
-                () -> new RuntimeException("Cannot find task by id: " + taskId));
+                () -> new EntityNotFoundException("Cannot find task by id: " + taskId));
 
         if (!task.getProject().getUser().getId().equals(user.getId())) {
-            throw new RuntimeException();
+            throw new PermissionDeniedException("User have no access to task with id: " + taskId);
         }
 
         String filePath = "/" + taskId + "-" + file.getOriginalFilename();
@@ -41,7 +44,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         try {
             dropboxService.uploadFile(filePath, file.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AttachmentException("Cannot upload to dropbox file: " + filePath, e);
         }
 
         Attachment model = new Attachment();
@@ -76,7 +79,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                 outputStream.write(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Cannot download file: " + requestDto.getFilename());
+            throw new AttachmentException("Cannot download file: " + requestDto.getFilename());
         }
     }
 }
