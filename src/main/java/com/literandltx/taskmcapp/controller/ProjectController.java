@@ -5,6 +5,8 @@ import com.literandltx.taskmcapp.dto.project.ProjectRespondDto;
 import com.literandltx.taskmcapp.dto.project.UpdateProjectRequestDto;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.service.app.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Project manager")
 @RequiredArgsConstructor
 @RequestMapping("/projects")
 @RestController
 public class ProjectController {
     private final ProjectService projectService;
 
+    @Operation(summary = "Create new project")
     @PostMapping
     public ProjectRespondDto createNewProject(
             Authentication authentication,
@@ -35,6 +39,7 @@ public class ProjectController {
         return projectService.save(requestDto, user);
     }
 
+    @Operation(summary = "Retrieve all user's projects")
     @GetMapping
     public List<ProjectRespondDto> retrieveUsersProjects(
             Authentication authentication,
@@ -45,6 +50,7 @@ public class ProjectController {
         return projectService.findAll(pageable, user);
     }
 
+    @Operation(summary = "Retrieve user project by id")
     @GetMapping("/{id}")
     public ProjectRespondDto retrieveProjectDetails(
             Authentication authentication,
@@ -55,6 +61,7 @@ public class ProjectController {
         return projectService.findById(id, user);
     }
 
+    @Operation(summary = "Update project by id")
     @PutMapping("/{id}")
     public ProjectRespondDto updateProject(
             Authentication authentication,
@@ -66,6 +73,7 @@ public class ProjectController {
         return projectService.updateById(id, requestDto, user);
     }
 
+    @Operation(summary = "Delete project by id")
     @DeleteMapping("/{id}")
     public void deleteProject(
             Authentication authentication,
