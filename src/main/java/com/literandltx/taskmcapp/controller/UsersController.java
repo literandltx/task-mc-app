@@ -4,6 +4,8 @@ import com.literandltx.taskmcapp.dto.user.profile.UpdateUserProfileRequestDto;
 import com.literandltx.taskmcapp.dto.user.profile.UserProfileResponseDto;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.service.app.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "User profile controller")
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @RestController
 public class UsersController {
     private final UserService userService;
 
+    @Operation(summary = "Update user role, allow only for ADMIN")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/role")
     public UserProfileResponseDto updateUserRole(
@@ -33,6 +37,7 @@ public class UsersController {
         return userService.updateUserRole(roleId, userId, adminUser);
     }
 
+    @Operation(summary = "Get user profile information")
     @GetMapping("/me")
     public UserProfileResponseDto getMyProfileInfo(
             Authentication authentication
@@ -42,6 +47,7 @@ public class UsersController {
         return userService.getProfileInfo(user);
     }
 
+    @Operation(summary = "Update user profile")
     @PutMapping("/me")
     public UserProfileResponseDto updateProfileInfo(
             @RequestBody UpdateUserProfileRequestDto requestDto,
@@ -52,6 +58,7 @@ public class UsersController {
         return userService.updateProfileInfo(requestDto, user);
     }
 
+    @Operation(summary = "Confirm use account after registration")
     @PostMapping("/confirm")
     public Boolean confirmUserAccount(
             @RequestParam(name = "token") String token,
