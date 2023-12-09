@@ -58,7 +58,7 @@ public class UsersController {
         return userService.updateProfileInfo(requestDto, user);
     }
 
-    @Operation(summary = "Confirm use account after registration")
+    @Operation(summary = "Confirm user's account after registration")
     @PostMapping("/confirm")
     public Boolean confirmUserAccount(
             @RequestParam(name = "token") String token,

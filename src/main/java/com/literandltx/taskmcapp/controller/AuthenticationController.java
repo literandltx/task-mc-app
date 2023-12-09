@@ -33,7 +33,7 @@ public class AuthenticationController {
         return authenticationService.authenticate(requestDto);
     }
 
-    @Operation(summary = "Register method")
+    @Operation(summary = "Register user")
     @LogExecutionTime
     @PostMapping("/register")
     public UserRegistrationResponseDto register(
