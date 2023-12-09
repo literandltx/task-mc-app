@@ -86,7 +86,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileResponseDto getProfileInfo(User user) {
+    public UserProfileResponseDto getProfileInfo(final User user) {
+        if (user == null) {
+            throw new RuntimeException("User is null");
+        }
+
         return userMapper.toDto(user);
     }
 
