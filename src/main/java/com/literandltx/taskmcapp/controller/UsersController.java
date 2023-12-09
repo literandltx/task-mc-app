@@ -60,7 +60,7 @@ public class UsersController {
 
     @Operation(summary = "Confirm user's account after registration")
     @PostMapping("/confirm")
-    public Boolean confirmUserAccount(
+    public UserProfileResponseDto confirmUserAccount(
             @RequestParam(name = "token") String token,
             Authentication authentication
     ) {

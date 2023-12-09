@@ -12,7 +12,7 @@ public interface UserService {
     UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RuntimeException;
 
-    Boolean verifyUserToken(String token, User user);
+    UserProfileResponseDto verifyUserToken(String token, User user);
 
     UserProfileResponseDto updateUserRole(Long roleId, Long userId, User adminUser);
 

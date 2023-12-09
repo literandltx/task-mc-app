@@ -16,8 +16,10 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
+@Accessors(chain = true)
 @NoArgsConstructor
 @Getter
 @Setter
