@@ -5,6 +5,8 @@ import com.literandltx.taskmcapp.dto.task.TaskResponseDto;
 import com.literandltx.taskmcapp.dto.task.UpdateTaskRequestDto;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.service.app.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Task manager")
 @RequiredArgsConstructor
 @RequestMapping("/tasks")
 @RestController
 public class TaskController {
     private final TaskService taskService;
 
+    @Operation(summary = "Create new task assigned to projectId")
     @PostMapping
     public TaskResponseDto createNewTask(
             @RequestBody @Valid CreateTaskRequestDto requestDto,
@@ -38,6 +42,7 @@ public class TaskController {
         return taskService.save(requestDto, projectId, user);
     }
 
+    @Operation(summary = "Retrieve all tasks information in projectId")
     @GetMapping
     public List<TaskResponseDto> retrieveTasksProjects(
             Pageable pageable,
@@ -49,6 +54,7 @@ public class TaskController {
         return taskService.findAll(projectId, user, pageable);
     }
 
+    @Operation(summary = "Retrieve task information in projectId")
     @GetMapping("/{id}")
     public TaskResponseDto retrieveTaskDetails(
             Authentication authentication,
@@ -60,6 +66,7 @@ public class TaskController {
         return taskService.findById(id, projectId, user);
     }
 
+    @Operation(summary = "Update task information in projectId")
     @PutMapping("/{id}")
     public TaskResponseDto updateTask(
             @RequestBody @Valid UpdateTaskRequestDto requestDto,
@@ -72,6 +79,7 @@ public class TaskController {
         return taskService.updateById(requestDto, id, projectId, user);
     }
 
+    @Operation(summary = "Delete task in projectId")
     @DeleteMapping("/{id}")
     public void deleteTask(
             Authentication authentication,
@@ -83,6 +91,7 @@ public class TaskController {
         taskService.deleteById(id, projectId, user);
     }
 
+    @Operation(summary = "Assign label to task in projectId")
     @PatchMapping("/assign")
     public void assignLabel(
             @RequestParam(name = "labelId") Long labelId,
@@ -95,6 +104,7 @@ public class TaskController {
         taskService.assignLabel(labelId, taskId, projectId, user);
     }
 
+    @Operation(summary = "Remove label from task in projectId")
     @PatchMapping("/remove")
     public void removeLabel(
             @RequestParam(name = "labelId") Long labelId,
