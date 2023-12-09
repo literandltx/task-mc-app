@@ -3,7 +3,9 @@ package com.literandltx.taskmcapp.dto.user.profile;
 import com.literandltx.taskmcapp.model.Role;
 import java.util.Set;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Accessors(chain = true)
 @Data
 public class UserProfileResponseDto {
     private String username;

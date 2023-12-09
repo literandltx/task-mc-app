@@ -14,11 +14,13 @@ import java.util.Collection;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Accessors(chain = true)
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE users SET is_deleted=true WHERE id=?")
