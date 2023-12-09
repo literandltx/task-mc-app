@@ -14,7 +14,6 @@ import com.literandltx.taskmcapp.repository.UserRepository;
 import com.literandltx.taskmcapp.service.app.UserService;
 import com.literandltx.taskmcapp.service.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,20 +59,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean verifyUserToken(String token, User user) {
-        Confirmation confirmation = confirmationRepository.findByToken(token).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find token: " + token));
+    public UserProfileResponseDto verifyUserToken(final String token, final User user) {
+        if (token == null || user == null) {
+            throw new RuntimeException("Token or/and user is null");
+        }
 
-        if (!Objects.equals(user.getId(), confirmation.getUser().getId())
-                || !Objects.equals(confirmation.getToken(), token)
-        ) {
-            throw new RuntimeException("Invalid user token");
+        if (!confirmationRepository.existsByTokenAndUser(token, user)) {
+            throw new EntityNotFoundException("Cannot find user verify token: " + token);
         }
 
         user.setIsConfirmed(true);
-        userRepository.save(user);
 
-        return Boolean.TRUE;
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
