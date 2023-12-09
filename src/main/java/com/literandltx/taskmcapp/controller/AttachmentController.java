@@ -6,6 +6,8 @@ import com.literandltx.taskmcapp.mapper.AttachmentMapper;
 import com.literandltx.taskmcapp.model.User;
 import com.literandltx.taskmcapp.service.app.AttachmentService;
 import com.literandltx.taskmcapp.service.dropbox.DropboxService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "Attachment manager")
 @RequiredArgsConstructor
 @RequestMapping("/attachments")
 @RestController
@@ -29,6 +32,7 @@ public class AttachmentController {
     private final AttachmentMapper attachmentMapper;
     private final DropboxService dropboxService;
 
+    @Operation(summary = "Upload file for task")
     @PostMapping
     public AttachmentResponseDto uploadAttachmentToTask(
             @RequestPart(name = "file") MultipartFile file,
@@ -40,6 +44,7 @@ public class AttachmentController {
         return attachmentMapper.toDto(attachmentService.uploadAttachment(taskId, user, file));
     }
 
+    @Operation(summary = "Download attached task's file")
     @GetMapping(produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})// MediaType.png
     public byte[] retrieveAttachmentsForTask(
             @RequestBody DownloadAttachmentRequestDto requestDto,
