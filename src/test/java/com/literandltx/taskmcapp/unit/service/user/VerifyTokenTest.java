@@ -30,7 +30,7 @@ public class VerifyTokenTest {
     private UserMapper userMapper;
 
     @Test
-    public void verifyToken_ValidToken_True() {
+    public void verifyToken_ValidToken() {
         // Given
         final Long id = 1L;
         final String token = "token";
@@ -54,7 +54,7 @@ public class VerifyTokenTest {
     }
 
     @Test
-    public void verifyToken_ValidToken_False() {
+    public void verifyToken_InvalidToken() {
         // Given
         final Long id = 1L;
         final String token = "token";
@@ -74,7 +74,7 @@ public class VerifyTokenTest {
     }
 
     @Test
-    public void verifyToken_NullCheck_TokenNull() {
+    public void verifyToken_TokenNull() {
         // Given
         final String token = "token";
         final String expected = "Token or/and user is null";
@@ -88,7 +88,7 @@ public class VerifyTokenTest {
     }
 
     @Test
-    public void verifyToken_NullCheck_UserNull() {
+    public void verifyToken_UserNull() {
         // Given
         final Long id = 1L;
         final var user = new User()
@@ -104,7 +104,7 @@ public class VerifyTokenTest {
     }
 
     @Test
-    public void verifyToken_NullCheck_TokenAndUserNull() {
+    public void verifyToken_TokenAndUserNull() {
         // Given
         final String expected = "Token or/and user is null";
 

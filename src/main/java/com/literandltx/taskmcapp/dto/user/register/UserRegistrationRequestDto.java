@@ -4,7 +4,9 @@ import com.literandltx.taskmcapp.validation.FieldMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Accessors(chain = true)
 @Data
 @FieldMatch(
         first = "password",

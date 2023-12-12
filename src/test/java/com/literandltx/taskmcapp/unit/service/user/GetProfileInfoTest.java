@@ -21,11 +21,11 @@ public class GetProfileInfoTest {
     private UserMapper userMapper;
 
     @Test
-    public void getProfileInfo_Default_Success() {
+    public void getProfileInfo_Default() {
         // Given
         final var id = 1L;
         final var username = "username";
-        final var password = " password";
+        final var password = "password";
         final var email = "mail@email.com";
         final var user = new User()
                 .setId(id)
@@ -48,7 +48,7 @@ public class GetProfileInfoTest {
     }
 
     @Test
-    public void getProfileInfo_NullCheck_UserNull() {
+    public void getProfileInfo_UserNull() {
         // Given
         final String expected = "User is null";
 
