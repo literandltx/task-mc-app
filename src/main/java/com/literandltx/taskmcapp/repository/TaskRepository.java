@@ -11,25 +11,25 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findAllByProjectId(Pageable pageable, Long projectId);
+    List<Task> findAllByProjectId(final Pageable pageable, final Long projectId);
 
-    Optional<Task> findByIdAndProjectId(Long id, Long projectId);
+    Optional<Task> findByIdAndProjectId(final Long id, final Long projectId);
 
-    Boolean existsByIdAndProjectId(Long id, Long projectId);
+    Boolean existsByIdAndProjectId(final Long id, final Long projectId);
 
     @Modifying
     @Query(
             value = "INSERT INTO tasks_labels (task_id, label_id) VALUES (:taskId, :labelId)",
             nativeQuery = true
     )
-    void assignLabelToTask(Long taskId, Long labelId);
+    void assignLabelToTask(final Long taskId, final Long labelId);
 
     @Query(
             value = "UPDATE tasks_labels SET is_deleted=true "
                     + "WHERE label_id=:labelId AND task_id=:taskId",
             nativeQuery = true
     )
-    void removeLabelFromTask(Long taskId, Long labelId);
+    void removeLabelFromTask(final Long taskId, final Long labelId);
 
     @Query(
             value = "SELECT"
@@ -44,5 +44,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                     + "    tl.is_deleted=false AND task_id=:taskId  ",
             nativeQuery = true
     )
-    List<String> findAllAssignedLabels(Long taskId);
+    List<String> findAllAssignedLabels(final Long taskId);
 }

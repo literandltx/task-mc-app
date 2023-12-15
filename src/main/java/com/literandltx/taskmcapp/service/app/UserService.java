@@ -9,14 +9,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    UserRegistrationResponseDto register(UserRegistrationRequestDto request)
-            throws RuntimeException;
+    UserRegistrationResponseDto register(
+            final UserRegistrationRequestDto request
+    ) throws RuntimeException;
 
-    UserProfileResponseDto verifyUserToken(String token, User user);
+    UserProfileResponseDto verifyUserToken(
+            final String token,
+            final User user
+    );
 
-    UserProfileResponseDto updateUserRole(Long roleId, Long userId, User adminUser);
+    UserProfileResponseDto updateUserRole(
+            final Long roleId,
+            final Long userId,
+            final User adminUser
+    );
 
-    UserProfileResponseDto getProfileInfo(User user);
+    UserProfileResponseDto getProfileInfo(
+            final User user
+    );
 
-    UserProfileResponseDto updateProfileInfo(UpdateUserProfileRequestDto requestDto, User user);
+    UserProfileResponseDto updateProfileInfo(
+            final UpdateUserProfileRequestDto requestDto,
+            final User user
+    );
 }

@@ -30,13 +30,14 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
-            throws RuntimeException {
+    public UserRegistrationResponseDto register(
+            final UserRegistrationRequestDto request
+    ) throws RuntimeException {
         if (userRepository.findByUsername(request.getEmail()).isPresent()) {
             throw new RuntimeException("User have already registered");
         }
 
-        User user = new User();
+        final User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
@@ -47,9 +48,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cannot find role by name: " + Role.RoleName.ROLE_USER.name()))));
 
-        User saved = userRepository.save(user);
+        final User saved = userRepository.save(user);
 
-        Confirmation confirmation = new Confirmation(user);
+        final Confirmation confirmation = new Confirmation(user);
         confirmationRepository.save(confirmation);
 
         emailService.sendEmailMessage(
@@ -59,7 +60,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileResponseDto verifyUserToken(final String token, final User user) {
+    public UserProfileResponseDto verifyUserToken(
+            final String token,
+            final User user
+    ) {
         if (token == null || user == null) {
             throw new RuntimeException("Token or/and user is null");
         }
@@ -74,10 +78,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileResponseDto updateUserRole(Long roleId, Long userId, User adminUser) {
-        User user = userRepository.findById(userId).orElseThrow(
+    public UserProfileResponseDto updateUserRole(
+            final Long roleId,
+            final Long userId,
+            final User adminUser
+    ) {
+        final User user = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user by id: " + userId));
-        Role role = roleRepository.findById(roleId).orElseThrow(
+        final Role role = roleRepository.findById(roleId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find role by id: " + roleId));
 
         user.getRoles().add(role);
@@ -86,7 +94,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileResponseDto getProfileInfo(final User user) {
+    public UserProfileResponseDto getProfileInfo(
+            final User user
+    ) {
         if (user == null) {
             throw new RuntimeException("User is null");
         }
@@ -96,8 +106,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileResponseDto updateProfileInfo(
-            UpdateUserProfileRequestDto requestDto,
-            User user
+            final UpdateUserProfileRequestDto requestDto,
+            final User user
     ) {
         user.setUsername(requestDto.getUsername());
         user.setEmail(requestDto.getEmail());

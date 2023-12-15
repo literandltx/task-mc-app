@@ -28,11 +28,11 @@ public class UsersController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/role")
     public UserProfileResponseDto updateUserRole(
-            @RequestParam("roleId") Long roleId,
-            @RequestParam("userId") Long userId,
-            Authentication authentication
+            @RequestParam("roleId") final Long roleId,
+            @RequestParam("userId") final Long userId,
+            final Authentication authentication
     ) {
-        User adminUser = (User) authentication.getPrincipal();
+        final User adminUser = (User) authentication.getPrincipal();
 
         return userService.updateUserRole(roleId, userId, adminUser);
     }
@@ -40,9 +40,9 @@ public class UsersController {
     @Operation(summary = "Get user profile information")
     @GetMapping("/me")
     public UserProfileResponseDto getMyProfileInfo(
-            Authentication authentication
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return userService.getProfileInfo(user);
     }
@@ -50,10 +50,10 @@ public class UsersController {
     @Operation(summary = "Update user profile")
     @PutMapping("/me")
     public UserProfileResponseDto updateProfileInfo(
-            @RequestBody UpdateUserProfileRequestDto requestDto,
-            Authentication authentication
+            @RequestBody final UpdateUserProfileRequestDto requestDto,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return userService.updateProfileInfo(requestDto, user);
     }
@@ -61,10 +61,10 @@ public class UsersController {
     @Operation(summary = "Confirm user's account after registration")
     @PostMapping("/confirm")
     public UserProfileResponseDto confirmUserAccount(
-            @RequestParam(name = "token") String token,
-            Authentication authentication
+            @RequestParam("token") final String token,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return userService.verifyUserToken(token, user);
     }

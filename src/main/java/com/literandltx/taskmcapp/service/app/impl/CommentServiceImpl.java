@@ -30,42 +30,40 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentResponseDto createComment(
-            CreateCommentRequestDto requestDto,
-            User user,
-            Long projectId,
-            Long taskId
+            final CreateCommentRequestDto requestDto,
+            final User user,
+            final Long projectId,
+            final Long taskId
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() ->
+        final Project project = projectRepository.findById(projectId).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
-        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
+        final Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find task in project with id: " + projectId));
 
-        Comment model = commentMapper.toModel(requestDto);
+        final Comment model = commentMapper.toModel(requestDto);
         model.setTimestamp(LocalDateTime.now());
         model.setTask(task);
         model.setUser(user);
 
-        Comment saved = commentRepository.save(model);
-
-        return commentMapper.toDto(saved);
+        return commentMapper.toDto(commentRepository.save(model));
     }
 
     @Override
     public List<CommentResponseDto> findAllByTask(
-            Pageable pageable,
-            User user,
-            Long projectId,
-            Long taskId
+            final Pageable pageable,
+            final User user,
+            final Long projectId,
+            final Long taskId
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
-        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
+        final Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find task in project with id: " + projectId));
 
         return commentRepository.findAllByTaskId(pageable, task.getId()).stream()

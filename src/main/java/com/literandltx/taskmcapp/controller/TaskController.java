@@ -33,11 +33,11 @@ public class TaskController {
     @Operation(summary = "Create new task assigned to projectId")
     @PostMapping
     public TaskResponseDto createNewTask(
-            @RequestBody @Valid CreateTaskRequestDto requestDto,
-            Authentication authentication,
-            @RequestParam Long projectId
+            @RequestBody @Valid final CreateTaskRequestDto requestDto,
+            final Authentication authentication,
+            @RequestParam final Long projectId
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return taskService.save(requestDto, projectId, user);
     }
@@ -45,11 +45,11 @@ public class TaskController {
     @Operation(summary = "Retrieve all tasks information in projectId")
     @GetMapping
     public List<TaskResponseDto> retrieveTasksProjects(
-            Pageable pageable,
-            Authentication authentication,
-            @RequestParam Long projectId
+            final Pageable pageable,
+            final Authentication authentication,
+            @RequestParam final Long projectId
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return taskService.findAll(projectId, user, pageable);
     }
@@ -57,11 +57,11 @@ public class TaskController {
     @Operation(summary = "Retrieve task information in projectId")
     @GetMapping("/{id}")
     public TaskResponseDto retrieveTaskDetails(
-            Authentication authentication,
-            @PathVariable Long id,
-            @RequestParam Long projectId
+            final Authentication authentication,
+            @PathVariable final Long id,
+            @RequestParam final Long projectId
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return taskService.findById(id, projectId, user);
     }
@@ -69,12 +69,12 @@ public class TaskController {
     @Operation(summary = "Update task information in projectId")
     @PutMapping("/{id}")
     public TaskResponseDto updateTask(
-            @RequestBody @Valid UpdateTaskRequestDto requestDto,
-            Authentication authentication,
-            @PathVariable Long id,
-            @RequestParam Long projectId
+            @RequestBody @Valid final UpdateTaskRequestDto requestDto,
+            final Authentication authentication,
+            @PathVariable final Long id,
+            @RequestParam final Long projectId
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return taskService.updateById(requestDto, id, projectId, user);
     }
@@ -82,11 +82,11 @@ public class TaskController {
     @Operation(summary = "Delete task in projectId")
     @DeleteMapping("/{id}")
     public void deleteTask(
-            Authentication authentication,
-            @PathVariable Long id,
-            @RequestParam Long projectId
+            final Authentication authentication,
+            @PathVariable final Long id,
+            @RequestParam final Long projectId
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         taskService.deleteById(id, projectId, user);
     }
@@ -94,12 +94,12 @@ public class TaskController {
     @Operation(summary = "Assign label to task in projectId")
     @PatchMapping("/assign")
     public void assignLabel(
-            @RequestParam(name = "labelId") Long labelId,
-            @RequestParam(name = "taskId") Long taskId,
-            @RequestParam(name = "projectId") Long projectId,
-            Authentication authentication
+            @RequestParam("labelId") final Long labelId,
+            @RequestParam("taskId") final Long taskId,
+            @RequestParam("projectId") final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         taskService.assignLabel(labelId, taskId, projectId, user);
     }
@@ -107,12 +107,12 @@ public class TaskController {
     @Operation(summary = "Remove label from task in projectId")
     @PatchMapping("/remove")
     public void removeLabel(
-            @RequestParam(name = "labelId") Long labelId,
-            @RequestParam(name = "taskId") Long taskId,
-            @RequestParam(name = "projectId") Long projectId,
-            Authentication authentication
+            @RequestParam("labelId") final Long labelId,
+            @RequestParam("taskId") final Long taskId,
+            @RequestParam("projectId") final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         taskService.removeLabel(labelId, taskId, projectId, user);
     }

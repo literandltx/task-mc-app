@@ -13,10 +13,13 @@ public class FieldMatchValidation implements ConstraintValidator<FieldMatch, Obj
         this.second = constraintAnnotation.second();
     }
 
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        Object fieldValue = new BeanWrapperImpl(value)
+    public boolean isValid(
+            final Object value,
+            final ConstraintValidatorContext context
+    ) {
+        final Object fieldValue = new BeanWrapperImpl(value)
                 .getPropertyValue(first);
-        Object fieldMatchValue = new BeanWrapperImpl(value)
+        final Object fieldMatchValue = new BeanWrapperImpl(value)
                 .getPropertyValue(second);
 
         if (fieldValue == null || fieldMatchValue == null) {

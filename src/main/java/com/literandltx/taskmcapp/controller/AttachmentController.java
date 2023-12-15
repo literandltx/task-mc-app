@@ -35,11 +35,11 @@ public class AttachmentController {
     @Operation(summary = "Upload file for task")
     @PostMapping
     public AttachmentResponseDto uploadAttachmentToTask(
-            @RequestPart(name = "file") MultipartFile file,
-            @RequestParam Long taskId,
-            Authentication authentication
+            @RequestPart("file") final MultipartFile file,
+            @RequestParam final Long taskId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return attachmentMapper.toDto(attachmentService.uploadAttachment(taskId, user, file));
     }
@@ -47,19 +47,19 @@ public class AttachmentController {
     @Operation(summary = "Download attached task's file")
     @GetMapping(produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})// MediaType.png
     public byte[] retrieveAttachmentsForTask(
-            @RequestBody DownloadAttachmentRequestDto requestDto,
-            HttpServletResponse response,
-            Authentication authentication
+            @RequestBody final DownloadAttachmentRequestDto requestDto,
+            final HttpServletResponse response,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         attachmentService.downloadAttachment(requestDto, response, user);
 
-        InputStream inputStream = dropboxService.downloadFile(requestDto.getFilename());
+        final InputStream inputStream = dropboxService.downloadFile(requestDto.getFilename());
 
         try {
             return inputStream.readAllBytes();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }

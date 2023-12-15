@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
     @EntityGraph(attributePaths = {"task", "task.project", "task.project.user"})
-    List<Attachment> findAllByTaskId(Long taskId);
+    List<Attachment> findAllByTaskId(final Long taskId);
 }

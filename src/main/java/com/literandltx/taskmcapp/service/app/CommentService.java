@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CommentService {
     CommentResponseDto createComment(
-            CreateCommentRequestDto requestDto,
-            User user,
-            Long projectId,
-            Long taskId
+            final CreateCommentRequestDto requestDto,
+            final User user,
+            final Long projectId,
+            final Long taskId
     );
 
     List<CommentResponseDto> findAllByTask(
-            Pageable pageable,
-            User user,
-            Long projectId,
-            Long taskId
+            final Pageable pageable,
+            final User user,
+            final Long projectId,
+            final Long taskId
     );
 }

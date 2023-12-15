@@ -32,11 +32,11 @@ public class LabelController {
     @Operation(summary = "Create new label for project")
     @PostMapping
     public LabelResponseDto createNewLabel(
-            @RequestBody @Valid CreateLabelRequestDto requestDto,
-            @RequestParam Long projectId,
-            Authentication authentication
+            @RequestBody @Valid final CreateLabelRequestDto requestDto,
+            @RequestParam final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return labelService.create(requestDto, projectId, user);
     }
@@ -44,11 +44,11 @@ public class LabelController {
     @Operation(summary = "Retrieve all label in project")
     @GetMapping
     public List<LabelResponseDto> retrieveLabels(
-            @RequestParam Long projectId,
-            Authentication authentication,
-            Pageable pageable
+            @RequestParam final Long projectId,
+            final Authentication authentication,
+            final Pageable pageable
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return labelService.findAll(projectId, user, pageable);
     }
@@ -56,11 +56,11 @@ public class LabelController {
     @Operation(summary = "Retrieve label by id in project")
     @GetMapping("/{id}")
     public LabelResponseDto retrieveLabelById(
-            @PathVariable Long id,
-            @RequestParam Long projectId,
-            Authentication authentication
+            @PathVariable final Long id,
+            @RequestParam final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return labelService.findById(id, projectId, user);
     }
@@ -68,12 +68,12 @@ public class LabelController {
     @Operation(summary = "Update label in project")
     @PutMapping
     public LabelResponseDto updateLabel(
-            @RequestBody @Valid UpdateLabelRequestDto requestDto,
-            @RequestParam Long id,
-            @RequestParam Long projectId,
-            Authentication authentication
+            @RequestBody @Valid final UpdateLabelRequestDto requestDto,
+            @RequestParam final Long id,
+            @RequestParam final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return labelService.updateById(requestDto, id, projectId, user);
     }
@@ -81,11 +81,11 @@ public class LabelController {
     @Operation(summary = "Delete label from project")
     @DeleteMapping
     public void deleteLabel(
-            @RequestParam Long id,
-            @RequestParam Long projectId,
-            Authentication authentication
+            @RequestParam final Long id,
+            @RequestParam final Long projectId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         labelService.deleteById(id, projectId, user);
     }

@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface DropboxService {
-    InputStream downloadFile(String filePath);
+    InputStream downloadFile(final String filePath);
 
-    FileMetadata uploadFile(String filePath, InputStream fileStream);
+    FileMetadata uploadFile(final String filePath, final InputStream fileStream);
 
-    CreateFolderResult createFolder(String folderPath);
+    CreateFolderResult createFolder(final String folderPath);
 
-    FolderMetadata getFolderDetails(String folderPath);
+    FolderMetadata getFolderDetails(final String folderPath);
 
-    FileMetadata getFileDetails(String filePath);
+    FileMetadata getFileDetails(final String filePath);
 
-    ListFolderResult listFolderContinue(String cursor);
+    ListFolderResult listFolderContinue(final String cursor);
 
-    void deleteFile(String filePath);
+    void deleteFile(final String filePath);
 
-    void deleteFolder(String folderPath);
+    void deleteFolder(final String folderPath);
 }

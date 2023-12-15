@@ -10,15 +10,36 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TaskService {
-    TaskResponseDto save(CreateTaskRequestDto requestDto, Long projectId, User user);
+    TaskResponseDto save(
+            final CreateTaskRequestDto requestDto,
+            final Long projectId,
+            final User user
+    );
 
-    List<TaskResponseDto> findAll(Long projectId, User user, Pageable pageable);
+    List<TaskResponseDto> findAll(
+            final Long projectId,
+            final User user,
+            final Pageable pageable
+    );
 
-    TaskResponseDto findById(Long id, Long projectId, User user);
+    TaskResponseDto findById(
+            final Long id,
+            final Long projectId,
+            final User user
+    );
 
-    TaskResponseDto updateById(UpdateTaskRequestDto requestDto, Long id, Long projectId, User user);
+    TaskResponseDto updateById(
+            final UpdateTaskRequestDto requestDto,
+            final Long id,
+            final Long projectId,
+            final User user
+    );
 
-    void deleteById(Long id, Long projectId, User user);
+    void deleteById(
+            final Long id,
+            final Long projectId,
+            final User user
+    );
 
     void assignLabel(
             Long labelId,

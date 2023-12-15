@@ -28,12 +28,12 @@ public class CommentController {
     @Operation(summary = "Create and assign comment to taskId")
     @PostMapping
     public CommentResponseDto addCommentToTask(
-            @RequestBody @Valid CreateCommentRequestDto requestDto,
-            @RequestParam Long projectId,
-            @RequestParam Long taskId,
-            Authentication authentication
+            @RequestBody @Valid final CreateCommentRequestDto requestDto,
+            @RequestParam final Long projectId,
+            @RequestParam final Long taskId,
+            final Authentication authentication
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return commentService.createComment(requestDto, user, projectId, taskId);
     }
@@ -41,12 +41,12 @@ public class CommentController {
     @Operation(summary = "Retrieve all comments assigned to task")
     @GetMapping
     public List<CommentResponseDto> retrieveCommentsForTask(
-            @RequestParam Long projectId,
-            @RequestParam Long taskId,
-            Authentication authentication,
-            Pageable pageable
+            @RequestParam final Long projectId,
+            @RequestParam final Long taskId,
+            final Authentication authentication,
+            final Pageable pageable
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return commentService.findAllByTask(pageable, user, projectId, taskId);
     }

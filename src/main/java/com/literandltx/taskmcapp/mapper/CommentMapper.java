@@ -10,11 +10,11 @@ import org.mapstruct.Mappings;
 
 @Mapper(config = MapperConfig.class)
 public interface CommentMapper {
-    Comment toModel(CreateCommentRequestDto requestDto);
+    Comment toModel(final CreateCommentRequestDto requestDto);
 
     @Mappings({
             @Mapping(source = "task.id", target = "taskId"),
             @Mapping(source = "user.id", target = "userId")
     })
-    CommentResponseDto toDto(Comment comment);
+    CommentResponseDto toDto(final Comment comment);
 }

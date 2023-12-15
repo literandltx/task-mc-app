@@ -28,18 +28,18 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public Boolean uploadAttachment(
-            Long taskId,
-            User user,
-            MultipartFile file
+            final Long taskId,
+            final User user,
+            final MultipartFile file
     ) {
-        Task task = taskRepository.findById(taskId).orElseThrow(
+        final Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task by id: " + taskId));
 
         if (!task.getProject().getUser().getId().equals(user.getId())) {
             throw new PermissionDeniedException("User have no access to task with id: " + taskId);
         }
 
-        String filePath = "/" + taskId + "-" + file.getOriginalFilename();
+        final String filePath = "/" + taskId + "-" + file.getOriginalFilename();
 
         try {
             dropboxService.uploadFile(filePath, file.getInputStream());
@@ -47,7 +47,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             throw new AttachmentException("Cannot upload to dropbox file: " + filePath, e);
         }
 
-        Attachment model = new Attachment();
+        final Attachment model = new Attachment();
         model.setDropboxFilename(filePath);
         model.setFilename(file.getOriginalFilename());
         model.setTask(task);
@@ -59,20 +59,20 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public void downloadAttachment(
-            DownloadAttachmentRequestDto requestDto,
-            HttpServletResponse response,
-            User user
+            final DownloadAttachmentRequestDto requestDto,
+            final HttpServletResponse response,
+            final User user
     ) {
-        String dropboxFilename = "/" + requestDto.getTaskId() + "-" + requestDto.getFilename();
+        final String dropboxFile = "/" + requestDto.getTaskId() + "-" + requestDto.getFilename();
 
-        InputStream inputStream = dropboxService.downloadFile(dropboxFilename);
+        final InputStream inputStream = dropboxService.downloadFile(dropboxFile);
 
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition",
                 "attachment; filename=" + requestDto.getFilename());
 
         try (OutputStream outputStream = response.getOutputStream()) {
-            byte[] buffer = new byte[1024];
+            final byte[] buffer = new byte[1024];
             int bytesRead;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {

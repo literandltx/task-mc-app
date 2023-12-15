@@ -11,33 +11,33 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LabelService {
     LabelResponseDto create(
-            CreateLabelRequestDto requestDto,
-            Long projectId,
-            User user
+            final CreateLabelRequestDto requestDto,
+            final Long projectId,
+            final User user
     );
 
     List<LabelResponseDto> findAll(
-            Long projectId,
-            User user,
-            Pageable pageable
+            final Long projectId,
+            final User user,
+            final Pageable pageable
     );
 
     LabelResponseDto findById(
-             Long id,
-             Long projectId,
-             User user
+            final Long id,
+            final Long projectId,
+            final User user
     );
 
     LabelResponseDto updateById(
-            UpdateLabelRequestDto requestDto,
-            Long id,
-            Long projectId,
-            User user
+            final UpdateLabelRequestDto requestDto,
+            final Long id,
+            final Long projectId,
+            final User user
     );
 
     void deleteById(
-            Long id,
-            Long projectId,
-            User user
+            final Long id,
+            final Long projectId,
+            final User user
     );
 }

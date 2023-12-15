@@ -9,9 +9,9 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapperConfig.class)
 public interface LabelMapper {
-    LabelResponseDto toDto(Label label);
+    LabelResponseDto toDto(final Label label);
 
-    Label toModel(CreateLabelRequestDto requestDto);
+    Label toModel(final CreateLabelRequestDto requestDto);
 
-    Label toModel(UpdateLabelRequestDto requestDto);
+    Label toModel(final UpdateLabelRequestDto requestDto);
 }
