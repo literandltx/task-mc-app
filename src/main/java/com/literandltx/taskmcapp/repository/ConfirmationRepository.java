@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConfirmationRepository extends JpaRepository<Confirmation, Long> {
-    Boolean existsByTokenAndUser(String token, User user);
+    Boolean existsByTokenAndUser(final String token, final User user);
 }

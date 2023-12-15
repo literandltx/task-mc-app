@@ -31,10 +31,10 @@ public class ProjectController {
     @Operation(summary = "Create new project")
     @PostMapping
     public ProjectRespondDto createNewProject(
-            Authentication authentication,
-            @RequestBody @Valid CreateProjectRequestDto requestDto
+            final Authentication authentication,
+            @RequestBody @Valid final CreateProjectRequestDto requestDto
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return projectService.save(requestDto, user);
     }
@@ -42,10 +42,10 @@ public class ProjectController {
     @Operation(summary = "Retrieve all user's projects")
     @GetMapping
     public List<ProjectRespondDto> retrieveUsersProjects(
-            Authentication authentication,
-            Pageable pageable
+            final Authentication authentication,
+            final Pageable pageable
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return projectService.findAll(pageable, user);
     }
@@ -53,10 +53,10 @@ public class ProjectController {
     @Operation(summary = "Retrieve user project by id")
     @GetMapping("/{id}")
     public ProjectRespondDto retrieveProjectDetails(
-            Authentication authentication,
-            @PathVariable Long id
+            final Authentication authentication,
+            @PathVariable final Long id
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return projectService.findById(id, user);
     }
@@ -64,11 +64,11 @@ public class ProjectController {
     @Operation(summary = "Update project by id")
     @PutMapping("/{id}")
     public ProjectRespondDto updateProject(
-            Authentication authentication,
-            @PathVariable Long id,
-            @RequestBody UpdateProjectRequestDto requestDto
+            final Authentication authentication,
+            @PathVariable final Long id,
+            @RequestBody final UpdateProjectRequestDto requestDto
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         return projectService.updateById(id, requestDto, user);
     }
@@ -76,10 +76,10 @@ public class ProjectController {
     @Operation(summary = "Delete project by id")
     @DeleteMapping("/{id}")
     public void deleteProject(
-            Authentication authentication,
-            @PathVariable Long id
+            final Authentication authentication,
+            @PathVariable final Long id
     ) {
-        User user = (User) authentication.getPrincipal();
+        final User user = (User) authentication.getPrincipal();
 
         projectService.deleteById(id, user);
     }

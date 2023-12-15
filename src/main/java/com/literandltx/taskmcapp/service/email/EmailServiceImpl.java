@@ -15,9 +15,13 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
     @Override
-    public void sendEmailMessage(String name, String to, String token) {
+    public void sendEmailMessage(
+            final String name,
+            final String to,
+            final String token
+    ) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
+            final SimpleMailMessage message = new SimpleMailMessage();
 
             message.setSubject("Account Verification");
             message.setFrom(fromEmail);
@@ -25,12 +29,12 @@ public class EmailServiceImpl implements EmailService {
             message.setText(getGreetingMessage(name, token));
 
             emailSender.send(message);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             throw new RuntimeException(exception.getMessage());
         }
     }
 
-    private String getGreetingMessage(String name, String token) {
+    private String getGreetingMessage(final String name, final String token) {
         return "Hello, " + name + ", seemed you register to task-mc-app. "
                 + "To confirm your account send token: " + token;
     }

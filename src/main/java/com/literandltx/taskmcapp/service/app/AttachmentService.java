@@ -9,14 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public interface AttachmentService {
     Boolean uploadAttachment(
-            Long taskId,
-            User user,
-            MultipartFile file
+            final Long taskId,
+            final User user,
+            final MultipartFile file
     );
 
     void downloadAttachment(
-            DownloadAttachmentRequestDto requestDto,
-            HttpServletResponse response,
-            User user
+            final DownloadAttachmentRequestDto requestDto,
+            final HttpServletResponse response,
+            final User user
     );
 }

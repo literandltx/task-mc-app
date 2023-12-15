@@ -22,10 +22,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRespondDto save(
-            CreateProjectRequestDto requestDto,
-            User user
+            final CreateProjectRequestDto requestDto,
+            final User user
     ) {
-        Project model = projectMapper.toModel(requestDto);
+        final Project model = projectMapper.toModel(requestDto);
         model.setUser(user);
         model.setStatus(Project.Status.INITIATED);
 
@@ -34,8 +34,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectRespondDto> findAll(
-            Pageable pageable,
-            User user
+            final Pageable pageable,
+            final User user
     ) {
         return projectRepository.findAllByUser(pageable, user).stream()
                 .map(projectMapper::toDto)
@@ -44,8 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRespondDto findById(
-            Long id,
-            User user
+            final Long id,
+            final User user
     ) {
         return projectMapper.toDto(projectRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(
@@ -54,26 +54,26 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRespondDto updateById(
-            Long id,
-            UpdateProjectRequestDto requestDto,
-            User user
+            final Long id,
+            final UpdateProjectRequestDto requestDto,
+            final User user
     ) {
         if (!projectRepository.existsByIdAndUser(id, user)) {
             throw new EntityNotFoundException("Cannot find project with id: " + id);
         }
 
-        Project model = projectMapper.toModel(requestDto);
+        final Project model = projectMapper.toModel(requestDto);
         model.setId(id);
         model.setUser(user);
 
-        Project saved = projectRepository.save(model);
+        final Project saved = projectRepository.save(model);
         return projectMapper.toDto(saved);
     }
 
     @Override
     public void deleteById(
-            Long id,
-            User user
+            final Long id,
+            final User user
     ) {
         projectRepository.deleteById(id);
     }

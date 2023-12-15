@@ -9,9 +9,9 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapperConfig.class)
 public interface ProjectMapper {
-    Project toModel(UpdateProjectRequestDto requestDto);
+    Project toModel(final UpdateProjectRequestDto requestDto);
 
-    Project toModel(CreateProjectRequestDto requestDto);
+    Project toModel(final CreateProjectRequestDto requestDto);
 
-    ProjectRespondDto toDto(Project project);
+    ProjectRespondDto toDto(final Project project);
 }

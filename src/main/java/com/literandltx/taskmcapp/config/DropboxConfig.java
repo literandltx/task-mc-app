@@ -14,7 +14,7 @@ public class DropboxConfig {
 
     @Bean
     public DbxClientV2 dropboxClient() {
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("app").build();
+        final DbxRequestConfig config = DbxRequestConfig.newBuilder("app").build();
         return new DbxClientV2(config, accessToken);
     }
 }

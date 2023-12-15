@@ -8,5 +8,5 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapperConfig.class)
 public interface AttachmentMapper {
     @Mapping(target = "isSuccess", source = "isSuccess")
-    AttachmentResponseDto toDto(Boolean isSuccess);
+    AttachmentResponseDto toDto(final Boolean isSuccess);
 }

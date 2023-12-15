@@ -27,16 +27,16 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public LabelResponseDto create(
-            CreateLabelRequestDto requestDto,
-            Long projectId,
-            User user
+            final CreateLabelRequestDto requestDto,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
-        Label model = labelMapper.toModel(requestDto);
+        final Label model = labelMapper.toModel(requestDto);
         model.setProject(project);
 
         return labelMapper.toDto(labelRepository.save(model));
@@ -44,11 +44,11 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<LabelResponseDto> findAll(
-            Long projectId,
-            User user,
-            Pageable pageable
+            final Long projectId,
+            final User user,
+            final Pageable pageable
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
@@ -61,17 +61,17 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public LabelResponseDto findById(
-            Long id,
-            Long projectId,
-            User user
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
 
-        Label label = labelRepository.findByIdAndProjectId(id, projectId).orElseThrow(
+        final Label label = labelRepository.findByIdAndProjectId(id, projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find label with id: " + id));
 
         return labelMapper.toDto(label);
@@ -79,12 +79,12 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public LabelResponseDto updateById(
-            UpdateLabelRequestDto requestDto,
-            Long id,
-            Long projectId,
-            User user
+            final UpdateLabelRequestDto requestDto,
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
@@ -94,7 +94,7 @@ public class LabelServiceImpl implements LabelService {
             throw new RuntimeException("Cannot update label with id: " + id);
         }
 
-        Label model = labelMapper.toModel(requestDto);
+        final Label model = labelMapper.toModel(requestDto);
         model.setId(id);
         model.setProject(project);
 
@@ -103,11 +103,11 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void deleteById(
-            Long id,
-            Long projectId,
-            User user
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);

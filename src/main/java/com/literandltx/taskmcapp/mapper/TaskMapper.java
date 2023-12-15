@@ -16,22 +16,22 @@ import org.mapstruct.Mappings;
 
 @Mapper(config = MapperConfig.class)
 public interface TaskMapper {
-    Task toModel(CreateTaskRequestDto requestDto);
+    Task toModel(final CreateTaskRequestDto requestDto);
 
-    Task toModel(UpdateTaskRequestDto requestDto);
+    Task toModel(final UpdateTaskRequestDto requestDto);
 
     @Mappings({
             @Mapping(source = "task.project.id", target = "projectId"),
             @Mapping(target = "labelIds", ignore = true),
             @Mapping(source = "attachedFiles", target = "attachedFiles")
     })
-    TaskResponseDto toDto(Task task, Set<String> attachedFiles);
+    TaskResponseDto toDto(final Task task, final Set<String> attachedFiles);
 
     @AfterMapping
-    default void setTaskLabels(@MappingTarget TaskResponseDto responseDto, Task task) {
-        Set<LabelResponseDto> collect = task.getLabels().stream()
+    default void setTaskLabels(@MappingTarget final TaskResponseDto responseDto, final Task task) {
+        final Set<LabelResponseDto> collect = task.getLabels().stream()
                 .map(s -> {
-                    LabelResponseDto dto = new LabelResponseDto();
+                    final LabelResponseDto dto = new LabelResponseDto();
                     dto.setId(s.getId());
                     dto.setName(s.getName());
                     dto.setColor(s.getColor());

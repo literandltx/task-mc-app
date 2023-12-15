@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LabelRepository extends JpaRepository<Label, Long> {
-    List<Label> findAllByProjectId(Pageable pageable, Long projectId);
+    List<Label> findAllByProjectId(final Pageable pageable, final Long projectId);
 
-    Optional<Label> findByIdAndProjectId(Long id, Long projectId);
+    Optional<Label> findByIdAndProjectId(final Long id, final Long projectId);
 
-    Boolean existsByIdAndProjectId(Long id, Long projectId);
+    Boolean existsByIdAndProjectId(final Long id, final Long projectId);
 }

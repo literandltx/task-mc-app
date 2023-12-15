@@ -1,11 +1,11 @@
 package com.literandltx.taskmcapp.exception.custom;
 
 public class DropboxException extends RuntimeException {
-    public DropboxException(String message) {
+    public DropboxException(final String message) {
         super(message);
     }
 
-    public DropboxException(String message, Throwable throwable) {
+    public DropboxException(final String message, final Throwable throwable) {
         super(message, throwable);
     }
 }

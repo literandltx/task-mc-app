@@ -37,29 +37,29 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto save(
-            CreateTaskRequestDto requestDto,
-            Long projectId,
-            User user
+            final CreateTaskRequestDto requestDto,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User do not have project with id: " + projectId);
         }
+
         Task model = taskMapper.toModel(requestDto);
         model.setProject(project);
 
-        Task saved = taskRepository.save(model);
-        return taskMapper.toDto(saved, new HashSet<>());
+        return taskMapper.toDto(taskRepository.save(model), new HashSet<>());
     }
 
     @Override
     public List<TaskResponseDto> findAll(
-            Long projectId,
-            User user,
-            Pageable pageable
+            final Long projectId,
+            final User user,
+            final Pageable pageable
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
@@ -75,18 +75,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto findById(
-            Long id,
-            Long projectId,
-            User user
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
 
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User does not have project with id: " + projectId);
         }
 
-        Task task = taskRepository.findByIdAndProjectId(id, projectId)
+        final Task task = taskRepository.findByIdAndProjectId(id, projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find task with id: " + id));
 
         task.setLabels(getTaskLabels(task));
@@ -95,12 +95,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto updateById(
-            UpdateTaskRequestDto requestDto,
-            Long id,
-            Long projectId,
-            User user
+            final UpdateTaskRequestDto requestDto,
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new RuntimeException("User have not project with id: " + projectId);
@@ -110,7 +110,7 @@ public class TaskServiceImpl implements TaskService {
             throw new RuntimeException("Cannot update task with id: " + id);
         }
 
-        Task model = taskMapper.toModel(requestDto);
+        final Task model = taskMapper.toModel(requestDto);
         model.setId(id);
         model.setProject(project);
 
@@ -119,11 +119,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteById(
-            Long id,
-            Long projectId,
-            User user
+            final Long id,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
@@ -139,12 +139,12 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void assignLabel(
-            Long labelId,
-            Long taskId,
-            Long projectId,
-            User user
+            final Long labelId,
+            final Long taskId,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
@@ -162,12 +162,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void removeLabel(
-            Long labelId,
-            Long taskId,
-            Long projectId,
-            User user
+            final Long labelId,
+            final Long taskId,
+            final Long projectId,
+            final User user
     ) {
-        Project project = projectRepository.findById(projectId).orElseThrow(
+        final Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
         if (!Objects.equals(project.getUser().getId(), user.getId())) {
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
@@ -176,11 +176,13 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.removeLabelFromTask(taskId, labelId);
     }
 
-    private Set<Label> getTaskLabels(Task task) {
+    private Set<Label> getTaskLabels(
+            final Task task
+    ) {
         return taskRepository.findAllAssignedLabels(task.getId()).stream()
                 .map(s -> {
-                    String[] parts = s.split(",");
-                    Label label = new Label();
+                    final String[] parts = s.split(",");
+                    final Label label = new Label();
                     label.setId(Long.valueOf(parts[0]));
                     label.setName(parts[1]);
                     label.setColor(parts[2]);
@@ -190,7 +192,9 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<String> getAttachedFiles(Task task) {
+    private Set<String> getAttachedFiles(
+            final Task task
+    ) {
         return attachmentRepository.findAllByTaskId(task.getId()).stream()
                 .map(Attachment::getFilename)
                 .collect(Collectors.toSet());
