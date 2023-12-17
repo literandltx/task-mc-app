@@ -16,9 +16,11 @@ import com.literandltx.taskmcapp.service.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -34,7 +36,10 @@ public class UserServiceImpl implements UserService {
             final UserRegistrationRequestDto request
     ) throws RuntimeException {
         if (userRepository.findByUsername(request.getEmail()).isPresent()) {
-            throw new RuntimeException("User have already registered");
+            log.info(String.format("User: %s, have already registered",
+                    request.getUsername()));
+            throw new RuntimeException(String.format("User: %s, have already registered",
+                    request.getUsername()));
         }
 
         final User user = new User();
@@ -56,6 +61,9 @@ public class UserServiceImpl implements UserService {
         emailService.sendEmailMessage(
                 request.getUsername(), request.getEmail(), confirmation.getToken());
 
+        log.info(String.format("User: %s, was registered successfully",
+                user.getUsername()));
+
         return userMapper.toModel(saved);
     }
 
@@ -69,10 +77,16 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!confirmationRepository.existsByTokenAndUser(token, user)) {
+            log.info(String.format("Cannot find user: %s, verify token: %s",
+                    user.getUsername(), token));
             throw new EntityNotFoundException("Cannot find user verify token: " + token);
         }
 
         user.setIsConfirmed(true);
+
+        log.info(String.format(
+                "The user: %s, has been successfully verified",
+                user.getUsername()));
 
         return userMapper.toDto(userRepository.save(user));
     }
@@ -90,6 +104,9 @@ public class UserServiceImpl implements UserService {
 
         user.getRoles().add(role);
 
+        log.info(String.format("A new role: %s, has been added for the user: %s",
+                role.getName(), user.getUsername()));
+
         return userMapper.toDto(userRepository.save(user));
     }
 
@@ -100,6 +117,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new RuntimeException("User is null");
         }
+
+        log.info(String.format("User: %s, get own profile info.",
+                user.getUsername()));
 
         return userMapper.toDto(user);
     }
@@ -113,6 +133,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(requestDto.getEmail());
         user.setFirstName(requestDto.getFirstName());
         user.setLastName(requestDto.getLastName());
+
+        log.info(String.format("Profile of user: %s, updated.",
+                user.getUsername()));
 
         return userMapper.toDto(userRepository.save(user));
     }

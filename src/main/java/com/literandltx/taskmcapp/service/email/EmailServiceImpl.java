@@ -1,11 +1,13 @@
 package com.literandltx.taskmcapp.service.email;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -29,7 +31,14 @@ public class EmailServiceImpl implements EmailService {
             message.setText(getGreetingMessage(name, token));
 
             emailSender.send(message);
+
+            log.info(String.format(
+                    "Account verification message to email: %s, was send successfully",
+                    to));
         } catch (final Exception exception) {
+            log.info(String.format(
+                    "The sending of the email to: %s, was interrupted for reason: %s",
+                    to, exception.getMessage()));
             throw new RuntimeException(exception.getMessage());
         }
     }
