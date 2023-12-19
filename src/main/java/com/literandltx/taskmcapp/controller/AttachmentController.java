@@ -1,6 +1,5 @@
 package com.literandltx.taskmcapp.controller;
 
-import com.literandltx.taskmcapp.dto.attachment.AttachmentResponseDto;
 import com.literandltx.taskmcapp.dto.attachment.DownloadAttachmentRequestDto;
 import com.literandltx.taskmcapp.mapper.AttachmentMapper;
 import com.literandltx.taskmcapp.model.User;
@@ -9,10 +8,9 @@ import com.literandltx.taskmcapp.service.dropbox.DropboxService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,19 +32,19 @@ public class AttachmentController {
 
     @Operation(summary = "Upload file for task")
     @PostMapping
-    public AttachmentResponseDto uploadAttachmentToTask(
+    public ResponseEntity<Void> uploadAttachmentToTask(
             @RequestPart("file") final MultipartFile file,
             @RequestParam final Long taskId,
             final Authentication authentication
     ) {
         final User user = (User) authentication.getPrincipal();
 
-        return attachmentMapper.toDto(attachmentService.uploadAttachment(taskId, user, file));
+        return attachmentService.uploadAttachment(taskId, user, file);
     }
 
     @Operation(summary = "Download attached task's file")
-    @GetMapping(produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})// MediaType.png
-    public byte[] retrieveAttachmentsForTask(
+    @GetMapping(produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public void retrieveAttachmentsForTask(
             @RequestBody final DownloadAttachmentRequestDto requestDto,
             final HttpServletResponse response,
             final Authentication authentication
@@ -54,13 +52,5 @@ public class AttachmentController {
         final User user = (User) authentication.getPrincipal();
 
         attachmentService.downloadAttachment(requestDto, response, user);
-
-        final InputStream inputStream = dropboxService.downloadFile(requestDto.getFilename());
-
-        try {
-            return inputStream.readAllBytes();
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
