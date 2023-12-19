@@ -1,6 +1,5 @@
 package com.literandltx.taskmcapp.service.dropbox;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.CreateFolderResult;
 import com.dropbox.core.v2.files.FileMetadata;
@@ -19,23 +18,6 @@ class DropboxServiceImpl implements DropboxService {
 
     @Override
     public InputStream downloadFile(final String filePath) {
-        try {
-            ListFolderResult result = client.files().listFolder("");
-            while (true) {
-                for (Metadata metadata : result.getEntries()) {
-                    System.out.println(metadata.getPathLower());
-                }
-
-                if (!result.getHasMore()) {
-                    break;
-                }
-
-                result = client.files().listFolderContinue(result.getCursor());
-            }
-        } catch (DbxException e) {
-            throw new DropboxException("Cannot download file: " + filePath);
-        }
-
         return handleDropboxAction(() -> client.files().download(filePath).getInputStream(),
                 String.format("Error downloading file: %s", filePath));
     }
