@@ -66,7 +66,8 @@ public class TaskServiceImpl implements TaskService {
     ) {
         getProjectAndCheckPermission(projectId, user);
 
-        final List<TaskResponseDto> list = taskRepository.findAllByProjectId(pageable, projectId).stream()
+        final List<TaskResponseDto> list = taskRepository
+                .findAllByProjectId(pageable, projectId).stream()
                 .map(task -> {
                     task.setLabels(getTaskLabels(task));
                     return taskMapper.toDto(task, getAttachedFiles(task));
