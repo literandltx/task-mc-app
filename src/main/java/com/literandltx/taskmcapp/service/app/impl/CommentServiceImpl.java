@@ -16,10 +16,13 @@ import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -35,11 +38,13 @@ public class CommentServiceImpl implements CommentService {
             final Long projectId,
             final Long taskId
     ) {
-        final Project project = projectRepository.findById(projectId).orElseThrow(() ->
-                new EntityNotFoundException("Cannot find project with id: " + projectId));
-        if (!Objects.equals(project.getUser().getId(), user.getId())) {
+        if (checkPermission(user, projectId)) {
+            log.info(String.format(
+                    "User: %s, have no access to projectId: %s",
+                    user.getUsername(), projectId));
             throw new PermissionDeniedException("User have no access to projectId: " + projectId);
         }
+
         final Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find task in project with id: " + projectId));
 
@@ -48,7 +53,13 @@ public class CommentServiceImpl implements CommentService {
         model.setTask(task);
         model.setUser(user);
 
-        return commentMapper.toDto(commentRepository.save(model));
+        final Comment save = commentRepository.save(model);
+
+        log.info(String.format(
+                "User: %s, create commentId: %s, to taskId: %s",
+                user.getUsername(), model.getId(), taskId));
+
+        return commentMapper.toDto(save);
     }
 
     @Override
@@ -58,16 +69,39 @@ public class CommentServiceImpl implements CommentService {
             final Long projectId,
             final Long taskId
     ) {
-        final Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find project with id: " + projectId));
-        if (!Objects.equals(project.getUser().getId(), user.getId())) {
-            throw new PermissionDeniedException("User have no access to projectId: " + projectId);
+        if (checkPermission(user, projectId)) {
+            log.info(String.format(
+                    "User: %s, have no access to projectId: %s",
+                    user.getUsername(), projectId));
+            throw new PermissionDeniedException(String.format(
+                    "User: %s, have no access to projectId: %s",
+                    user.getUsername(), projectId));
         }
-        final Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() ->
-                new EntityNotFoundException("Cannot find task in project with id: " + projectId));
 
-        return commentRepository.findAllByTaskId(pageable, task.getId()).stream()
+        final List<CommentResponseDto> list = commentRepository
+                .findAllByUserAndTaskId(pageable, user, taskId).stream()
                 .map(commentMapper::toDto)
                 .toList();
+
+        log.info(String.format(
+                "User: %s, find all comments by projectId: %s, taskId: %s",
+                user.getUsername(), projectId, taskId));
+
+        return list;
+    }
+
+    private Boolean checkPermission(User user, Long projectId) {
+        final Optional<Project> project = projectRepository.findById(projectId);
+
+        if (project.isEmpty()) {
+            log.info(String.format(
+                    "User: %s, have not projectId: %s.",
+                    user.getUsername(), projectId));
+            throw new EntityNotFoundException(String.format(
+                    "User: %s, have not projectId: %s.",
+                    user.getUsername(), projectId));
+        }
+
+        return !Objects.equals(project.get().getUser().getId(), user.getId());
     }
 }
